@@ -1,0 +1,824 @@
+<title>Cyber Threat Monitoring L1 Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root{
+  --paper:#EDF0F3; --surface:#FFFFFF; --surface-2:#F6F8FA;
+  --ink:#131820; --ink-2:#3A4552; --muted:#6B7784;
+  --rule:#D6DCE3; --rule-soft:#E6EAEF;
+  --accent:#1F4E79; --accent-soft:#E1EBF3;
+  --signal:#9C5A16; --signal-soft:#F6EBDD;
+  --pa:#5C7A94; --pb:#1F4E79; --pc:#2A6E52; --pd:#A8621B;
+  --crit:#A62B25; --ok:#2A6E52;
+  --sans:"Archivo","Segoe UI",system-ui,sans-serif;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1319; --surface:#161D25; --surface-2:#1B232C;
+    --ink:#E7ECF1; --ink-2:#B3BFCA; --muted:#8593A1;
+    --rule:#2A333D; --rule-soft:#222A33;
+    --accent:#7BB0DB; --accent-soft:#1A2B3A;
+    --signal:#D89A55; --signal-soft:#2C2317;
+    --pa:#8AA6BF; --pb:#7BB0DB; --pc:#63B58D; --pd:#D89A55;
+    --crit:#E0736B; --ok:#63B58D;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1319; --surface:#161D25; --surface-2:#1B232C;
+  --ink:#E7ECF1; --ink-2:#B3BFCA; --muted:#8593A1;
+  --rule:#2A333D; --rule-soft:#222A33;
+  --accent:#7BB0DB; --accent-soft:#1A2B3A;
+  --signal:#D89A55; --signal-soft:#2C2317;
+  --pa:#8AA6BF; --pb:#7BB0DB; --pc:#63B58D; --pd:#D89A55;
+  --crit:#E0736B; --ok:#63B58D;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 20px 80px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--sans)}
+p{margin:0}
+a{color:var(--accent)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.prose{font-family:var(--serif);font-size:17px;line-height:1.62;color:var(--ink-2);max-width:66ch}
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+
+.mast{display:grid;gap:22px;padding:56px 0 34px;border-bottom:2px solid var(--ink)}
+.mast h1{font-size:clamp(34px,5.2vw,58px);font-weight:700;letter-spacing:-.028em;line-height:1.02}
+.mast h1 em{font-style:normal;color:var(--accent)}
+.mast-sub{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline}
+.mast-sub .t{font-size:19px;color:var(--ink-2);font-family:var(--serif);max-width:72ch;line-height:1.5}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));
+  gap:0;border-top:1px solid var(--rule);margin-top:6px}
+.fact{padding:14px 18px 14px 0;border-right:1px solid var(--rule-soft)}
+.fact:last-child{border-right:0}
+.fact .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.fact .v{font-size:15.5px;font-weight:600;margin-top:5px;line-height:1.35}
+.fact .v small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);
+  font-family:var(--mono);margin-top:3px;letter-spacing:.02em}
+
+section{padding-top:52px}
+.sec-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:24px}
+.sec-head h2{font-size:22px;font-weight:700;letter-spacing:-.015em}
+.sec-head .note{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-left:auto}
+
+.callout{background:var(--signal-soft);border-left:3px solid var(--signal);
+  padding:20px 24px;display:grid;gap:10px}
+.callout .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--signal);font-weight:600}
+.callout p{font-family:var(--serif);font-size:16.5px;line-height:1.58;color:var(--ink-2);max-width:74ch}
+
+.tw{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px}
+th,td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--rule-soft);vertical-align:top;font-size:14px}
+thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;background:var(--surface-2);border-bottom:1px solid var(--rule)}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tfoot td{font-weight:700;border-top:1px solid var(--rule);background:var(--surface-2)}
+.neg{color:var(--crit);font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tool-name{font-weight:600}
+.tool-name span{display:block;font-family:var(--mono);font-size:11.5px;font-weight:400;color:var(--muted);margin-top:3px;white-space:normal}
+.tier{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;margin-bottom:7px;font-weight:600;white-space:nowrap}
+.tier.t1{background:var(--accent-soft);color:var(--accent)}
+.tier.t2{background:var(--signal-soft);color:var(--signal)}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);margin-bottom:26px}
+.tiers .tp{background:var(--surface);padding:18px 22px 20px}
+.tiers .tp h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.tiers .tp .spec{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-bottom:11px;line-height:1.5}
+.tiers .tp p{font-size:13.8px;line-height:1.5;color:var(--ink-2)}
+.warn{margin-top:18px;padding:14px 18px;border:1px solid var(--signal);
+  border-left-width:3px;background:var(--signal-soft);font-size:13.8px;line-height:1.5;color:var(--ink-2)}
+.warn b{color:var(--ink)}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);
+  border:1px solid var(--rule-soft);padding:1px 5px;color:var(--ink-2);white-space:nowrap}
+
+.phase{margin-top:38px}
+.phase-bar{display:flex;align-items:center;gap:14px;padding:9px 0 9px 16px;
+  border-left:5px solid var(--ph);background:var(--surface-2);border-top:1px solid var(--rule);flex-wrap:wrap}
+.phase-bar .pn{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ph)}
+.phase-bar h3{font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+.phase-bar .meta{margin-left:auto;padding-right:16px;font-family:var(--mono);
+  font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.day{display:grid;grid-template-columns:74px 1fr;background:var(--surface);
+  border-left:5px solid var(--ph);border-right:1px solid var(--rule);
+  border-bottom:1px solid var(--rule)}
+.day-n{padding:20px 0 20px 16px;border-right:1px solid var(--rule-soft)}
+.day-n .d{font-family:var(--mono);font-size:27px;font-weight:600;line-height:1;
+  color:var(--ph);font-variant-numeric:tabular-nums}
+.day-n .h{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:7px}
+.day-b{padding:20px 20px 22px;min-width:0}
+.day-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin-bottom:6px}
+.day-t h4{font-size:17.5px;font-weight:600;letter-spacing:-.012em}
+.codes{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.code{font-family:var(--mono);font-size:11px;padding:2.5px 7px;border:1px solid var(--rule);
+  color:var(--ink-2);background:var(--surface-2);white-space:nowrap}
+.code.core{border-color:var(--ph);color:var(--ph);background:transparent;font-weight:500}
+
+.cols{display:grid;grid-template-columns:1.25fr 1fr 0.85fr;gap:0}
+.col{padding-right:20px;border-right:1px solid var(--rule-soft);min-width:0}
+.col:last-child{border-right:0;padding-right:0}
+.col+.col{padding-left:20px}
+.col .ch{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:9px;font-weight:500}
+.col ul{margin:0;padding:0;list-style:none;display:grid;gap:7px}
+.col li{font-size:13.6px;line-height:1.46;color:var(--ink-2);padding-left:13px;position:relative}
+.col li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:1.5px;background:var(--ph);opacity:.75}
+.col li b{color:var(--ink);font-weight:600}
+.col li .hrs{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.col li .tier{margin-bottom:0;font-size:9px;padding:1px 4px;vertical-align:1px}
+.assess{margin-top:14px;padding:10px 14px;background:var(--accent-soft);
+  border-left:3px solid var(--accent);font-size:13.4px;color:var(--ink-2);line-height:1.45}
+.assess b{color:var(--ink)}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule)}
+.panel{background:var(--surface);padding:20px 22px}
+.panel h4{font-size:15px;font-weight:600;margin-bottom:11px}
+.panel ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.panel li{font-size:14px;line-height:1.5;color:var(--ink-2)}
+
+footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule);
+  display:flex;flex-wrap:wrap;gap:10px 28px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:860px){
+  .cols{grid-template-columns:1fr;gap:18px}
+  .col{border-right:0;padding-right:0;padding-bottom:16px;border-bottom:1px solid var(--rule-soft)}
+  .col+.col{padding-left:0}
+  .col:last-child{border-bottom:0;padding-bottom:0}
+  .day{grid-template-columns:58px 1fr}
+  .day-n{padding-left:12px}
+  .day-n .d{font-size:22px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div>
+    <div class="eyebrow">TESDA &middot; ICT Sector &middot; Competency Standards deployed under TESDA Circular 051 s. 2023</div>
+    <h1 style="margin-top:14px">Cyber Threat Monitoring <em>Level&nbsp;I</em><br>15-Day Training Plan</h1>
+  </div>
+  <div class="mast-sub">
+    <p class="t">A day-by-day delivery outline for the two core units of competency, built for a classroom of low-specification Windows machines: a portable bench that runs on every trainee desk, and one shared box carrying the SIEM. No licensed software anywhere.</p>
+  </div>
+  <div class="facts">
+    <div class="fact"><div class="k">Qualification</div><div class="v">Cyber Threat Monitoring Level I<small>ICT Sector</small></div></div>
+    <div class="fact"><div class="k">Core units</div><div class="v">2 units<small>CS-ICT251101 &middot; CS-ICT251102</small></div></div>
+    <div class="fact"><div class="k">Basic / Common</div><div class="v">9 + 2 units<small>4003111xx &middot; ICT315202 &middot; ICT311203</small></div></div>
+    <div class="fact"><div class="k">Plan duration</div><div class="v">15 days &middot; 120 h<small>8 h &times; 15 sessions</small></div></div>
+    <div class="fact"><div class="k">Exit roles</div><div class="v">Cybersecurity Analyst (L1)<small>support &middot; help desk staff</small></div></div>
+  </div>
+</header>
+
+<section>
+  <div class="sec-head"><h2>Read this before you register the program</h2></div>
+  <div class="callout">
+    <div class="lbl">Scope declaration</div>
+    <p>TESDA published <b>Competency Standards</b> for Cyber Threat Monitoring <b>Level&nbsp;I</b> &mdash; the qualification definition and the units of competency &mdash; but <b>no Training Regulations</b>. There is no promulgated Section 3 carrying the &ldquo;Level I&rdquo; name, so no official nominal duration, trainee entry requirement or tools list exists for it. The hour figures and learning-outcome sequencing below are benchmarked against the <b>Cyber Threat Monitoring NC I</b> Training Regulations (ICTCTM124, promulgated 13 November 2024), whose two core units are identical in element and performance criteria.</p>
+    <p>That TR budgets <b>271 hours in-centre plus 120 hours of Supervised Industry Learning</b>. This plan is <b>120 hours</b>. It is therefore an <b>intensive bridging or upskilling course</b> &mdash; right for graduates, career shifters and in-service IT staff preparing for national assessment &mdash; and <b>not a substitute for a WTR-registered full program</b>. Where registration is the goal, use this outline as the core-competency spine and add the missing in-centre hours and the full SIL.</p>
+  </div>
+
+  <div class="tw" style="margin-top:24px">
+    <table style="min-width:760px">
+      <thead><tr><th>Component</th><th class="num">Units</th><th class="num">NC I TR nominal</th><th class="num">This plan</th><th class="num">Variance</th><th>How the gap is handled</th></tr></thead>
+      <tbody>
+        <tr><td>Basic competencies</td><td class="num">9</td><td class="num">47 h</td><td class="num">20 h</td><td class="neg">&minus;27 h</td><td>Compressed and delivered <em>inside</em> watch-desk scenarios rather than as standalone modules</td></tr>
+        <tr><td>Common competencies</td><td class="num">2</td><td class="num">28 h</td><td class="num">10 h</td><td class="neg">&minus;18 h</td><td>Leans on the entry requirement &mdash; the trainee already operates a computer competently</td></tr>
+        <tr><td>Core competencies</td><td class="num">2</td><td class="num">196 h</td><td class="num">82 h</td><td class="neg">&minus;114 h</td><td>Every element and performance criterion is covered; repetition volume is what shrinks</td></tr>
+        <tr><td>Integration &amp; mock assessment</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">8 h</td><td class="num" style="color:var(--ok)">+8 h</td><td>Added: portfolio build and a full mock national assessment</td></tr>
+        <tr><td>Supervised Industry Learning</td><td class="num">&mdash;</td><td class="num">120 h</td><td class="num">0 h</td><td class="neg">&minus;120 h</td><td><b>Not covered.</b> Must be arranged separately with a partner SOC or IT department</td></tr>
+      </tbody>
+      <tfoot><tr><td>Total</td><td class="num">13</td><td class="num">391 h</td><td class="num">120 h</td><td class="neg">&minus;271 h</td><td></td></tr></tfoot>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>The low-spec bench</h2>
+    <div class="note">every substitution runs on the trainee machine described below</div>
+  </div>
+  <p class="prose" style="margin-bottom:22px">The NC I TR specifies an i7 8th-gen workstation with 16&nbsp;GB RAM per trainee, a 64&nbsp;GB server, licensed SIEM, an enterprise EDR console and commercial vulnerability scanners. This plan targets the machine a training centre actually has &mdash; and splits the bench in two, so the heavy component sits on <em>one</em> machine instead of twenty.</p>
+
+  <div class="tiers">
+    <div class="tp">
+      <span class="tier t1">Tier 1 &middot; every trainee machine</span>
+      <h4>The portable bench</h4>
+      <div class="spec">Intel i3/i5 4th&ndash;8th gen or AMD equivalent &middot; 4&ndash;8&nbsp;GB RAM &middot; 128&ndash;256&nbsp;GB SSD or HDD &middot; integrated graphics &middot; Windows 10/11, Pro preferred</div>
+      <p>Everything a trainee runs locally: Defender driven from PowerShell, Sysmon, Hayabusa, the Sysinternals and Zimmerman tools, Nmap, and the Wazuh <em>agent</em>. No hypervisor, no service, no admin rights beyond the install. This tier alone satisfies every performance criterion in both core units.</p>
+    </div>
+    <div class="tp">
+      <span class="tier t2">Tier 2 &middot; one shared server box</span>
+      <h4>The class SIEM &mdash; VirtualBox + Wazuh OVA</h4>
+      <div class="spec">Any one machine with 4 physical cores &middot; 12&nbsp;GB RAM or more &middot; 120&nbsp;GB free SSD &middot; VT-x / AMD-V enabled in BIOS</div>
+      <p>The instructor machine, a spare desktop, or a small server runs <b>VirtualBox</b> hosting the <b>Wazuh all-in-one OVA</b>. Trainees never install it &mdash; they enrol an agent and open the dashboard in a browser. One box turns the whole room into a real SOC.</p>
+    </div>
+  </div>
+
+  <div class="tw">
+    <table style="min-width:860px">
+      <thead><tr><th style="width:19%">TR requirement</th><th style="width:33%">Low-spec Windows substitute</th><th style="width:13%">Footprint</th><th>Why it still satisfies the performance criteria</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="tool-name"><span class="tier t1">Tier 1</span>SIEM &mdash; local detection layer<span>UC1 &middot; PC 1.1&ndash;1.3, 4.2</span></td>
+          <td>Event Viewer custom views + <b>Sysmon</b> (SwiftOnSecurity config) + <b>Hayabusa</b> (portable .exe, Sigma rules over EVTX) + <b>DeepBlueCLI</b> (PowerShell, no install)</td>
+          <td class="num">~180 MB disk<br>~150 MB RAM</td>
+          <td>Produces real detection alerts, a searchable timeline and severity-classified output on the trainee&rsquo;s own machine. This is the fallback that keeps the course running when the server box is down &mdash; and it teaches what a SIEM is doing before the trainee is handed one.</td>
+        </tr>
+        <tr>
+          <td class="tool-name"><span class="tier t2">Tier 2</span>SIEM &mdash; the real thing<span>UC1 &middot; PC 1.1&ndash;1.5, 2.1&ndash;2.3, 4.2, 5.1&ndash;5.4 &nbsp;|&nbsp; UC2 &middot; PC 1.1&ndash;1.3, 2.4</span></td>
+          <td><b>Oracle VirtualBox</b> hosting the <b>Wazuh all-in-one OVA</b> (v4.14.x, Amazon Linux 2023 &mdash; manager, indexer, Filebeat and dashboard in one appliance) on the server box.<br><br>Trainee side: the <b>Wazuh Windows agent</b> only &mdash; a ~10 MB installer, well under 100 MB resident.</td>
+          <td class="num"><b>Server box:</b><br>4 vCPU &middot; 8 GB RAM<br>50 GB disk<br><br><b>Trainee:</b><br>&lt;100 MB RAM</td>
+          <td>Turns simulated triage into the real workflow: agent enrolment, live alerts with <b>rule levels 0&ndash;15</b> as the severity classification the CS names, agent connected/disconnected status for the &ldquo;is the solution operational&rdquo; criterion, file-integrity monitoring, a built-in <b>MITRE ATT&amp;CK</b> view, and a <b>Vulnerability Detection</b> module with syscollector inventory that feeds Unit 2 directly. The OVA is the only realistic route &mdash; a scripted Wazuh install is a day of work the course does not have.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Ticketing system<span>UC1 &middot; PC 1.5, 4.3 &nbsp;|&nbsp; UC2 &middot; PC 3.1&ndash;3.3</span></td>
+          <td><b>osTicket on portable XAMPP</b> for a fully local desk, or free-tier <b>Jira Service Management</b> / <b>Zammad</b> in the browser; fallback is a shared <b>LibreOffice Calc</b> ticket register carrying the same fields</td>
+          <td class="num">~400 MB local<br>or 0 MB (web)</td>
+          <td>Ticket issuance, escalation trail and SLA clock are all evidenceable. The browser option removes the local footprint entirely on 4&nbsp;GB machines.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Enterprise security solution<span>NGAV / NGFW / EDR console &mdash; UC1 &middot; PC 2.1&ndash;2.3, 3.1&ndash;3.4</span></td>
+          <td><b>Microsoft Defender Antivirus</b> and <b>Defender Firewall with Advanced Security</b>, driven from the console: <code>Get-MpComputerStatus</code>, <code>Get-MpThreatDetection</code>, <code>Update-MpSignature</code>, <code>Start-MpScan</code>. <b>Sysmon</b> supplies the EDR-style telemetry.</td>
+          <td class="num">0 MB<br>already installed</td>
+          <td>Installed / operational / can-clean-or-delete are all directly checkable, and the failed&ndash;clean&ndash;delete&ndash;quarantine&ndash;blocked action range from the CS is reproducible with the EICAR test file.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Virtualization applications<span>server appliance &middot; disposable target</span></td>
+          <td><b>VirtualBox</b> on the server box, for the Wazuh OVA.<br><br><b>Windows Sandbox</b> on trainee machines, for the disposable &ldquo;infected system&rdquo; &mdash; built into Windows 10/11 <em>Pro</em>, discarded on close.</td>
+          <td class="num"><b>VirtualBox:</b><br>free, ~250 MB<br><br><b>Sandbox:</b><br>~1 GB RAM</td>
+          <td>Splits the two jobs across the two tiers so neither machine carries both. <b>Keep them on separate machines</b> &mdash; Windows Sandbox requires Hyper-V, and with Hyper-V enabled VirtualBox drops into a much slower execution mode that makes the Wazuh VM painful. On Home editions or 4&nbsp;GB trainee machines, run the disposable target on the instructor machine and project it.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Vulnerability scanning tools<span>UC2 &middot; PC 2.4 &mdash; NIST SP 800-115 &sect;4.3&ndash;4.4</span></td>
+          <td><b>Nmap + NSE</b> (<code>-sV --script vuln</code>, <code>vulners</code>); <b>Nessus Essentials</b> (free, 16 IPs) where 8&nbsp;GB is available; <b>OWASP ZAP</b> baseline for web-application assets; <code>Get-HotFix</code> and <code>winget upgrade</code> for patch state</td>
+          <td class="num">~100 MB (Nmap)<br>~1.5 GB (Nessus)</td>
+          <td>Nmap alone satisfies discovery and scanning under 800-115 on any machine here; Nessus is the credentialed-scan upgrade where RAM allows. ZAP covers the web-application asset class named in the CS range. Where Tier 2 is running, <b>Wazuh Vulnerability Detection</b> is the agent-based, always-on complement &mdash; it is the &ldquo;vulnerability management solution&rdquo; the CS names in required knowledge, and its syscollector inventory becomes the asset register on Day 11.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Scan-impact monitoring<span>UC2 &middot; PC 2.5&ndash;2.6</span></td>
+          <td><b>Resource Monitor</b> (<code>resmon</code>), <b>Performance Monitor</b> (<code>perfmon</code>), <code>typeperf</code> to CSV, <code>Test-NetConnection</code> latency baselines</td>
+          <td class="num">0 MB</td>
+          <td>CPU, storage and network-latency thresholds are logged to CSV &mdash; exactly the evidence the terminate-and-report criterion needs.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Malicious software behaviour<span>UC1 &middot; PC 5.2&ndash;5.4</span></td>
+          <td><b>EICAR</b> test file, <b>Atomic Red Team</b> (PowerShell module, ATT&amp;CK-mapped safe tests), <b>MITRE ATT&amp;CK Navigator</b>, and public sandbox reports read in the browser</td>
+          <td class="num">~50 MB<br>rest is browser</td>
+          <td>Reproduces lateral movement, ingress, egress, exploitation and installation behaviour safely. <b>Live malware is never introduced</b> on bare-metal classroom machines.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Log &amp; timeline forensics<span>UC1 &middot; PC 3.1&ndash;3.2, 4.2</span></td>
+          <td><b>EvtxECmd</b> + <b>Timeline Explorer</b> (Eric Zimmerman, portable), <b>TCPView</b>, <b>Process Explorer</b>, <b>Autoruns</b></td>
+          <td class="num">~120 MB<br>portable, no install</td>
+          <td>All run from a USB drive with no installer and no service &mdash; usable on locked-down lab images where trainees have no admin rights.</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Office productivity<span>all reporting criteria</span></td>
+          <td><b>LibreOffice</b>, or Microsoft 365 web apps</td>
+          <td class="num">~700 MB<br>or 0 MB (web)</td>
+          <td>Carries the report, register and portfolio templates.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="warn">
+    <b>Instructor pre-course build &mdash; roughly half a day, before Day 01.</b> Enable VT-x/AMD-V in the server box BIOS &middot; install VirtualBox and the Extension Pack &middot; import the Wazuh OVA and set its network adapter to <b>Bridged</b> so trainee agents can reach it &middot; boot, log in as <code>wazuh-user</code>, note the VM&rsquo;s IP &middot; open <code>https://&lt;ip&gt;</code> and change the default <code>admin</code> dashboard password before the room ever sees it &middot; enable the Vulnerability Detection module &middot; enrol one test agent end-to-end. Budget an extra hour for the first OVA import on a spinning disk. <b>Do not enable Hyper-V or Windows Sandbox on this same box.</b></div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>The 15 sessions</h2>
+    <div class="note">8 h per session &middot; codes reference CS elements and performance criteria</div>
+  </div>
+
+  <div class="phase" style="--ph:var(--pa)">
+    <div class="phase-bar">
+      <span class="pn">Phase A</span>
+      <h3>Workplace foundation &mdash; basic and common competencies, delivered through the work</h3>
+      <span class="meta">Days 01&ndash;03 &middot; 24 h</span>
+    </div>
+
+    <div class="day" style="--ph:var(--pa)">
+      <div class="day-n"><div class="d">01</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Orientation and the watch-desk voice</h4><span class="code core">AM live &middot; PM async</span></div>
+        <div class="codes"><span class="code">400311101</span><span class="code">400311102</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Morning &mdash; online synchronous, 8:00&ndash;12:00.</b> Everything an assessor has to watch happens here</li>
+            <li><b>CBT orientation and how the hybrid day runs</b> &mdash; competency-based delivery, the national assessment pathway, COC versus full qualification, what a portfolio has to contain <span class="hrs">0.6 h</span></li>
+            <li><b>Icebreaker, team formation, OSH and environmental induction</b> &mdash; ergonomics coached on camera, home workstation audit completed live; lab checklist and green pledge deferred to the first on-site day <span class="hrs">1.2 h</span></li>
+            <li><b>Inside a SOC</b> &mdash; the alert pipeline and the tiers, compressed; the detail is in the afternoon reading <span class="hrs">0.5 h</span></li>
+            <li><b>Follow routine spoken messages</b> &mdash; shift handover briefing by ear, read-back drill in breakout pairs, clarifying questions under pressure. <b>LO1, and it cannot be delivered any other way</b> <span class="hrs">1.1 h</span></li>
+            <li><b>Work with others</b> &mdash; who owns an alert at each stage, then the shift huddle run on camera, teams sequential, observed <span class="hrs">0.4 h</span></li>
+            <li><b>Afternoon &mdash; fully asynchronous, 1:00&ndash;5:00.</b> Eight tasks, ~3 h 40 m: pre-test, evidence folder, handover write-up, handout reading, <b>SOP markup</b> and <b>written-notice triage</b> (the marked pair, LO2 in full), source evaluation, reflection <span class="hrs">4 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li>Video platform with <b>breakout rooms and recording</b></li>
+            <li>Shared digital whiteboard or annotatable slide</li>
+            <li>LibreOffice Writer and Calc</li>
+            <li>Shift-handover log template, sent before the session</li>
+            <li>SOP pack &mdash; alert intake, severity matrix, escalation matrix</li>
+            <li>Pre-test link; a stated submission route for the afternoon pack</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li><i>AM, observed:</i> read-back drill and clarifying-question role-play</li>
+            <li><i>AM, observed:</i> huddle observation checklists + team formation record</li>
+            <li><i>AM:</i> signed home workstation audit</li>
+            <li><i>PM:</i> shift-handover log written from own notes</li>
+            <li><i>PM, marked:</i> SOP markup worksheet + written-notice grid</li>
+            <li><i>PM:</i> source evaluation sheet; pre-test result</li>
+            <li><i>Deferred to first on-site day:</i> lab OSH checklist, green lab pledge</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pa)">
+      <div class="day-n"><div class="d">02</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Routine problem solving and self-management under alert pressure</h4></div>
+        <div class="codes"><span class="code">400311103</span><span class="code">400311104</span><span class="code">400311105</span><span class="code">400311109</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Identify &rarr; assess cause &rarr; determine corrective action &rarr; communicate the plan</b>, run against real desk faults: an agent that stopped reporting, duplicate tickets, a false-positive storm <span class="hrs">3 h</span></li>
+            <li>Five Whys and cause-and-effect analysis on a recurring AV detection <span class="hrs">1 h</span></li>
+            <li><b>Enhance self-management</b> &mdash; personal and career goals mapped to the L1&rarr;L2 analyst ladder, recognising emotions during a critical incident, learning-style inventory <span class="hrs">2 h</span></li>
+            <li><b>Support innovation</b> and <b>entrepreneurial mindset</b> &mdash; writing an SOP improvement proposal, costing a missed detection <span class="hrs">2 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li>LibreOffice Draw for the cause-and-effect diagram</li>
+            <li><code>Get-WinEvent</code> to reproduce the fault being analysed</li>
+            <li>The ticket register started on Day 01</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>3 problem-solving worksheets with action plans</li>
+            <li>1 written SOP improvement proposal</li>
+            <li>Completed self-assessment inventory</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pa)">
+      <div class="day-n"><div class="d">03</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Your first alert, end to end</h4><span class="code core">AM live &middot; PM async</span></div>
+        <div class="codes"><span class="code core">CS-ICT251101 E1 &middot; introduced</span><span class="code">400311106</span><span class="code">400311107</span><span class="code">400311108</span><span class="code">ICT315202</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Morning &mdash; online synchronous, 8:00&ndash;12:00.</b> The trainer presents for about 95 minutes of 240; four activities carry the rest</li>
+            <li><b>The alert lifecycle</b> &mdash; the six steps of <span class="mono">CS-ICT251101</span> E1, and the three pre-identified criteria named in the CS: <b>threat, detection, routine</b> <span class="hrs">0.3 h</span></li>
+            <li><b>&ldquo;Would you paste this?&rdquo;</b> &mdash; a twelve-item timed decision drill on what may be looked up and what may never leave the client. <b>Delivers <span class="mono">400311106</span> LO4 before a browser is opened</b> <span class="hrs">0.4 h</span></li>
+            <li><b>The four lookup desks &mdash; a jigsaw.</b> Each team learns one of AbuseIPDB, VirusTotal, MITRE ATT&amp;CK and NVD, then teaches it to the class, including <b>what that source cannot tell you</b>. <span class="mono">400311106</span> LO1&ndash;LO2, and core underpinning knowledge 1.11 <span class="hrs">0.9 h</span></li>
+            <li><b>The trust ladder</b> &mdash; authoritative, credible, unverified, and the four questions asked of any source; demonstrated live across three tabs on one claim. <span class="mono">400311106</span> LO3 <span class="hrs">0.4 h</span></li>
+            <li><b>The triage relay</b> &mdash; one alert, four trainees, one stage each, speaking only in their own stage. This is where <span class="mono">ICT315202</span> LO1 and the core unit&rsquo;s analytical skill are <b>observed</b> <span class="hrs">0.6 h</span></li>
+            <li><b>The class writes its own ticket QA checklist</b> &mdash; not issued, co-constructed, and it becomes the marking standard for Days 4&ndash;15. <span class="mono">ICT315202</span> LO3 <span class="hrs">0.3 h</span></li>
+            <li><b>Safe desk, safe evidence, retired machine</b> &mdash; night-shift and electrical hazards, then <b>hash it, name it, lock it, log it</b> demonstrated end to end. <span class="mono">400311107</span> &middot; <span class="mono">400311108</span> &middot; <span class="mono">400311106</span> LO4&ndash;LO5 <span class="hrs">0.3 h</span></li>
+            <li><b>Afternoon &mdash; fully asynchronous, 1:00&ndash;5:00.</b> Seven tasks, ~3 h 30 m: triage three alerts with reasons, write one ticket, <b>self-check it</b>, peer-review a partner&rsquo;s, rate five sources, the evidence practical, the OSH self-audit and disposal record, reflection <span class="hrs">4 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li>Video platform with <b>breakout rooms and recording</b>; chat used as the answer channel for the timed drill</li>
+            <li>Browser only: AbuseIPDB, VirusTotal <b>search tab</b>, MITRE ATT&amp;CK, NVD/CVE</li>
+            <li>Fallback screenshots of all four sites, so no activity depends on a site being up</li>
+            <li><code>Get-FileHash</code> and 7-Zip AES-256 with <b>encrypt file names</b>, for the evidence container</li>
+            <li>A shared document for the co-constructed QA checklist</li>
+            <li>EICAR <b>hash only</b> &mdash; the file itself is not created until Day 06</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li><i>AM, observed:</i> relay observation sheet &mdash; did the trainee ask for missing information, and give a reason rather than a verdict</li>
+            <li><i>AM:</i> four-desk notes; safe-handling drill sheet; the class QA checklist with its session record</li>
+            <li><i>PM:</i> 3 alert triages with written reasons</li>
+            <li><i>PM, marked:</i> 1 ticket <b>with the trainee&rsquo;s own self-check table</b>, and 1 completed peer QA sheet</li>
+            <li><i>PM:</i> source evaluation rating 5 sources</li>
+            <li><i>PM:</i> evidence register row plus the AES-encrypted artefact</li>
+            <li><i>PM:</i> OSH workstation self-audit; disposal record for a retired host</li>
+            <li><i>Still deferred to first on-site day:</i> lab OSH checklist, green lab pledge</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase" style="--ph:var(--pb)">
+    <div class="phase-bar">
+      <span class="pn">Phase B</span>
+      <h3>Monitor and report cyber threats &mdash; <span class="mono" style="font-size:.85em">CS-ICT251101</span></h3>
+      <span class="meta">Days 04&ndash;10 &middot; 56 h</span>
+    </div>
+
+    <div class="day" style="--ph:var(--pb)">
+      <div class="day-n"><div class="d">04</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>The machine underneath &mdash; computer operations and operating-system ground</h4></div>
+        <div class="codes"><span class="code">ICT311203</span><span class="code core">Underpinning knowledge 1.1</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Perform computer operations</b> &mdash; plan the task, input, access, output and maintain, all framed as &ldquo;prepare an analyst workstation&rdquo; <span class="hrs">4 h</span></li>
+            <li><b>Operating systems for monitoring</b> &mdash; Windows services, processes, scheduled tasks and autoruns; the macOS and Ubuntu equivalents; where Android and iOS fit the CS range <span class="hrs">3 h</span></li>
+            <li>Capture the workstation baseline every later day is compared against <span class="hrs">1 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li>Sysinternals Suite &mdash; Process Explorer, Autoruns, TCPView (portable, ~40 MB)</li>
+            <li><code>Get-Service</code>, <code>Get-ScheduledTask</code>, <code>Get-Process</code></li>
+            <li>Ubuntu shown from the instructor machine or a free browser terminal &mdash; no local VM required</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>Signed workstation build checklist</li>
+            <li>Exported process and autorun baseline</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pb)">
+      <div class="day-n"><div class="d">05</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Network, web and script literacy for the L1 desk</h4></div>
+        <div class="codes"><span class="code core">Underpinning knowledge 1.2&ndash;1.4</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Network infrastructure and architecture</b> &mdash; LAN and WAN, addressing and subnets, ports, NAT and port forwarding, read from live evidence rather than slides <span class="hrs">3 h</span></li>
+            <li><b>Web server and website architecture</b> &mdash; the request path, status codes, access-log anatomy, where a WAF sits in it <span class="hrs">2 h</span></li>
+            <li><b>Scripting for triage</b> &mdash; PowerShell first (<code>Get-WinEvent</code>, <code>Get-NetTCPConnection</code>), then a twenty-line Python log parser and its bash equivalent <span class="hrs">3 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><code>ipconfig</code>, <code>netstat -ano</code>, <code>Test-NetConnection</code>, <code>nslookup</code>, TCPView</li>
+            <li>Python 3 (~25 MB)</li>
+            <li>Nmap host discovery, lab subnet only</li>
+            <li><code>python -m http.server</code> as the practice web server</li>
+            <li>Wireshark for one 60-second capture</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>Annotated netstat and TCPView capture</li>
+            <li>Working log-parser script</li>
+            <li>Port-mapping diagram of the lab network</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pb)">
+      <div class="day-n"><div class="d">06</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Check for alerts &mdash; sources, intake channels, red flags</h4></div>
+        <div class="codes"><span class="code core">LO 1 &middot; PC 1.1&ndash;1.3</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Enrol your agent</b> &mdash; install the Wazuh Windows agent, register it against the class server, and watch your own machine appear on the dashboard <span class="hrs">1 h</span></li>
+            <li><b>Sources of detection alert</b> &mdash; SIEM, AV, firewall, WAF, DLP, EDR and NDR, and what each one can and cannot see; where each one lands in the Wazuh alert stream <span class="hrs">1.5 h</span></li>
+            <li><b>Incident-report intake</b> across the full CS range &mdash; phone call, walk-in, email, SMS, chat, video conference &mdash; as scripted drills <span class="hrs">2 h</span></li>
+            <li><b>Log and detection management</b> &mdash; Security, System and Sysmon channels, Defender Protection History, the firewall log, and the same events arriving server-side <span class="hrs">1.5 h</span></li>
+            <li><b>Red flag detection and severity</b> &mdash; ransomware and PE-infection indicators; Wazuh <b>rule levels 0&ndash;15</b> read as the security-solution severity classification the CS names <span class="hrs">2 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> <b>Wazuh dashboard</b> in the browser; agent enrolment from the trainee machine</li>
+            <li>Event Viewer custom views</li>
+            <li>Sysmon with the SwiftOnSecurity configuration, forwarded to Wazuh</li>
+            <li><code>Get-MpThreatDetection</code>, Defender Protection History</li>
+            <li><code>pfirewall.log</code> from Defender Firewall</li>
+            <li>EICAR test file, for one genuine and safe AV detection &mdash; visible locally <em>and</em> on the dashboard</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>Agent enrolment record with agent ID and connected status</li>
+            <li>6 intake records across at least 4 channels</li>
+            <li>Red-flag indicator card for ransomware and for PE infection</li>
+            <li>Severity mapping sheet: Wazuh rule level &rarr; company severity band</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pb)">
+      <div class="day-n"><div class="d">07</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Assess, ticket, and check the security solution&rsquo;s status</h4></div>
+        <div class="codes"><span class="code core">LO 1 &middot; PC 1.4&ndash;1.5</span><span class="code core">LO 2 &middot; PC 2.1&ndash;2.3</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Assess the alert against pre-identified criteria</b> &mdash; threat, detection, routine &mdash; and apply the severity matrix <span class="hrs">2 h</span></li>
+            <li><b>Issue a ticket on confirmation</b> &mdash; required fields, timestamps, evidence attachment, the SLA clock <span class="hrs">2 h</span></li>
+            <li><b>Check status of the third-party security solution</b> &mdash; is it installed, is it operational, can it clean or delete the issue &mdash; read from the Wazuh agent inventory <em>and</em> from the endpoint itself <span class="hrs">3 h</span></li>
+            <li><b>The management console</b> &mdash; a guided pass over the Wazuh dashboard: agent list, connected vs disconnected, last keep-alive, syscollector inventory, security configuration assessment <span class="hrs">1 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> <b>Wazuh dashboard</b> as the enterprise management console; instructor disconnects two agents mid-session for the drill</li>
+            <li>osTicket on portable XAMPP, or free-tier Jira Service Management / Zammad</li>
+            <li><code>Get-MpComputerStatus</code>, <code>Get-MpPreference</code>, <code>Get-Service WinDefend</code>, <code>Get-Service WazuhSvc</code></li>
+            <li>Defender Firewall with Advanced Security</li>
+            <li>EICAR, to prove the clean and quarantine actions</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>8 triaged alerts with criteria scoring</li>
+            <li>8 tickets raised in the system</li>
+            <li>Solution-status report on the SOP template</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pb)">
+      <div class="day-n"><div class="d">08</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Perform manual checking and verification</h4></div>
+        <div class="codes"><span class="code core">LO 3 &middot; PC 3.1&ndash;3.4</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Check the detection</b> as the solution recorded it, against the raw log <span class="hrs">2 h</span></li>
+            <li><b>Check the action taken</b> across the full CS range &mdash; failed, clean, delete, quarantine, blocked, re-image <span class="hrs">2 h</span></li>
+            <li><b>Check and patch updates</b> &mdash; signature version, engine version, platform update, operating-system patch state <span class="hrs">2 h</span></li>
+            <li><b>Scan the infected system</b> &mdash; quick, full, custom and offline scan, and when each is the right call <span class="hrs">2 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><code>Update-MpSignature</code>, <code>Start-MpScan -ScanType FullScan</code>, <code>Get-HotFix</code>, <code>winget upgrade</code></li>
+            <li><b>Windows Sandbox</b> as the disposable &ldquo;infected system&rdquo;, discarded on close</li>
+            <li>Atomic Red Team for safe ATT&amp;CK-mapped behaviour &mdash; never live malware</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>5 verification worksheets mapping detection &rarr; action &rarr; outcome</li>
+            <li>Patch-state report for the assigned host</li>
+            <li>Scan logs for all four scan types</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pb)">
+      <div class="day-n"><div class="d">09</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Conduct case follow-up and escalate</h4></div>
+        <div class="codes"><span class="code core">LO 4 &middot; PC 4.1&ndash;4.3</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Verify scan results</b> back to the customer, client or stakeholder &mdash; the call, and the written confirmation that follows it <span class="hrs">2 h</span></li>
+            <li><b>Read the scan log for failed action</b> per SOP &mdash; the quarantine that did not hold, the deletion that did not complete <span class="hrs">3 h</span></li>
+            <li><b>Escalate to the appropriate authority</b> &mdash; IT department manager, information security manager, security vendor, CISO &mdash; with the pack each one actually needs <span class="hrs">3 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> <b>Wazuh</b> alert search and the agent&rsquo;s own log, to find the action that did not complete</li>
+            <li><b>Hayabusa</b> &mdash; Sigma rules over EVTX to a CSV timeline, one portable executable</li>
+            <li><b>DeepBlueCLI</b> &mdash; PowerShell, no install</li>
+            <li>EvtxECmd and Timeline Explorer for the case timeline</li>
+            <li>Ticket system and email for the escalation trail</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>3 escalation packs naming the authority and the justification</li>
+            <li>Failed-action log extract</li>
+            <li>Client verification record</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pb)">
+      <div class="day-n"><div class="d">10</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Perform alert reporting &mdash; then the unit assessment</h4></div>
+        <div class="codes"><span class="code core">LO 5 &middot; PC 5.1&ndash;5.4</span><span class="code">CS-ICT251101 assessment</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Notify on high and critical threats</b> &mdash; the ten-minute notification, and what it must contain <span class="hrs">1 h</span></li>
+            <li><b>Report threat activity by spread and lateral movement</b>, and separately <b>by egress and ingress</b> <span class="hrs">2 h</span></li>
+            <li><b>Identify threats by exploitation activity and installation behaviour</b>, mapped to MITRE ATT&amp;CK <span class="hrs">1 h</span></li>
+          </ul>
+          <div class="assess"><b>Institutional assessment &middot; 4 h.</b> Written exam, then demonstration with oral questioning against the full Evidence Guide for CS-ICT251101.</div>
+          </div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> <b>Wazuh MITRE ATT&amp;CK module</b> &mdash; the technique mapping arrives already attached to the alert</li>
+            <li>MITRE ATT&amp;CK Navigator in the browser, layer exported as JSON</li>
+            <li>Atomic Red Team tests for lateral movement, exfiltration and persistence, run inside Windows Sandbox</li>
+            <li><code>Get-NetTCPConnection</code> and TCPView for ingress and egress evidence</li>
+            <li>The Hayabusa timeline as the narrative spine of the report</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>1 complete threat report</li>
+            <li>1 ATT&amp;CK Navigator layer</li>
+            <li>Unit 1 written and practical results</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase" style="--ph:var(--pc)">
+    <div class="phase-bar">
+      <span class="pn">Phase C</span>
+      <h3>Conduct vulnerability scanning &mdash; <span class="mono" style="font-size:.85em">CS-ICT251102</span></h3>
+      <span class="meta">Days 11&ndash;14 &middot; 32 h</span>
+    </div>
+
+    <div class="day" style="--ph:var(--pc)">
+      <div class="day-n"><div class="d">11</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Check the schedule for scanning</h4></div>
+        <div class="codes"><span class="code core">LO 1 &middot; PC 1.1&ndash;1.4</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Consult vulnerability management with the immediate supervisor</b> &mdash; what to ask, what to record, who counts as the supervisor in the CS range <span class="hrs">2 h</span></li>
+            <li><b>Request access to the scanning calendar and timeline</b> against the signed scope of work <span class="hrs">2 h</span></li>
+            <li><b>Identify the number of assets to be scanned</b> for that schedule; build the register across servers, endpoints, mobile devices and web applications, starting from the Wazuh syscollector inventory <span class="hrs">3 h</span></li>
+            <li>Sign-off, change window and prescribed timeline <span class="hrs">1 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> <b>Wazuh Vulnerability Detection</b> as the vulnerability management solution the CS names; <b>syscollector</b> for the hardware, OS and installed-package inventory</li>
+            <li>Ticket-system change request</li>
+            <li>LibreOffice Calc asset register and scan calendar</li>
+            <li><code>arp -a</code>, <code>Get-NetNeighbor</code> and Nmap <code>-sn</code> to reconcile the inventory against what is actually on the wire</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>Signed scope of work</li>
+            <li>Asset register reconciled three ways &mdash; syscollector, discovery sweep, physical count</li>
+            <li>Scan calendar entry with change reference</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pc)">
+      <div class="day-n"><div class="d">12</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Conduct scanning of assets &mdash; authorisation and execution</h4></div>
+        <div class="codes"><span class="code core">LO 2 &middot; PC 2.1&ndash;2.4</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Verify the asset list and the priority assets</b> with the supervisor and the change manager <span class="hrs">2 h</span></li>
+            <li><b>NIST SP 800-115 &sect;4.3 Network Discovery and &sect;4.4 Vulnerability Scanning</b> &mdash; read the sections the CS names, then apply them <span class="hrs">2 h</span></li>
+            <li><b>Run the scans</b> inside the change window &mdash; agent-based first from Wazuh, then uncredentialed Nmap, then the web-application pass; reconcile what each method found and what only one of them saw <span class="hrs">4 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> <b>Wazuh Vulnerability Detection</b> &mdash; CVE findings per agent, with package versions and CVSS already attached</li>
+            <li>Nmap with NSE: <code>-sV --script vuln</code>, <code>vulners</code></li>
+            <li>Nessus Essentials where 8 GB RAM is available</li>
+            <li>OWASP ZAP baseline scan for the web-application assets</li>
+            <li>Targets are Windows Sandbox instances and a local XAMPP or <code>http.server</code> site &mdash; never a third-party host</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>Countersigned authorised target list</li>
+            <li>Scan configuration export</li>
+            <li>Raw output from three methods, with a reconciliation note on the gaps between them</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pc)">
+      <div class="day-n"><div class="d">13</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Watch the impact, and know when to stop</h4></div>
+        <div class="codes"><span class="code core">LO 2 &middot; PC 2.5&ndash;2.6</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Monitor CPU usage, storage usage and network latency</b> against software capability while a scan is live <span class="hrs">3 h</span></li>
+            <li><b>Induce the load deliberately</b> &mdash; aggressive timing template, high parallelism &mdash; and record what breaks first <span class="hrs">2 h</span></li>
+            <li><b>Terminate and report to IT</b> when network or endpoint slowness arises: the stop rule, who is called, what is logged <span class="hrs">3 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> The Wazuh server&rsquo;s own load, watched from the VirtualBox host &mdash; the class sees what a SIEM under scan pressure looks like from both ends</li>
+            <li>Resource Monitor and Performance Monitor; <code>typeperf</code> to CSV</li>
+            <li>Counters: processor time, logical-disk free space, network bytes total per second</li>
+            <li><code>Test-NetConnection</code> and a continuous ping for the latency baseline</li>
+            <li>Nmap <code>-T5</code> against <code>-T2</code> as the controlled comparison</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>Performance CSV with the threshold breach annotated</li>
+            <li>Scan-termination report</li>
+            <li>Incident ticket for the induced disruption</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" style="--ph:var(--pc)">
+      <div class="day-n"><div class="d">14</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Provide the report of scanning &mdash; then the unit assessment</h4></div>
+        <div class="codes"><span class="code core">LO 3 &middot; PC 3.1&ndash;3.3</span><span class="code">CS-ICT251102 assessment</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Record failed scans</b> per company procedure, with a reason taxonomy &mdash; host unreachable, credentials rejected, scan aborted, agent absent <span class="hrs">1.5 h</span></li>
+            <li><b>Record successful scans</b> per company procedure <span class="hrs">1 h</span></li>
+            <li><b>Build and submit the vulnerability assessment report</b> to the immediate supervisor and the change manager: findings, CVSS, affected assets, remediation owner, due date <span class="hrs">1.5 h</span></li>
+          </ul>
+          <div class="assess"><b>Institutional assessment &middot; 4 h.</b> Written exam, then demonstration with oral questioning against the full Evidence Guide for CS-ICT251102.</div>
+          </div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li><span class="tier t2">T2</span> Wazuh dashboard report export as the raw finding set the written report is built from</li>
+            <li>LibreOffice report and register templates</li>
+            <li>CVSS v3.1 calculator in the browser</li>
+            <li>NVD and CVE lookup for finding detail</li>
+            <li>Ticket system for the remediation tickets</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>1 vulnerability assessment report, submitted and acknowledged</li>
+            <li>Failed and successful scan register</li>
+            <li>Remediation tickets with named owners</li>
+            <li>Unit 2 written and practical results</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase" style="--ph:var(--pd)">
+    <div class="phase-bar">
+      <span class="pn">Phase D</span>
+      <h3>Consolidation and mock national assessment</h3>
+      <span class="meta">Day 15 &middot; 8 h</span>
+    </div>
+
+    <div class="day" style="--ph:var(--pd)">
+      <div class="day-n"><div class="d">15</div><div class="h">8 h</div></div>
+      <div class="day-b">
+        <div class="day-t"><h4>Portfolio, mock assessment, gap plan</h4></div>
+        <div class="codes"><span class="code">CS-ICT251101</span><span class="code">CS-ICT251102</span></div>
+        <div class="cols">
+          <div class="col"><div class="ch">Session flow</div><ul>
+            <li><b>Portfolio build</b> against the critical aspects of competency in both Evidence Guides &mdash; every sub-criterion has to point at a specific artefact <span class="hrs">2 h</span></li>
+            <li><b>Mock national assessment</b> &mdash; written exam <span class="hrs">1.5 h</span>, demonstration with oral questioning <span class="hrs">2.5 h</span>, portfolio interview <span class="hrs">1 h</span></li>
+            <li><b>Feedback and gap plan</b>, plus the briefing on the Supervised Industry Learning this course does not replace <span class="hrs">1 h</span></li>
+          </ul></div>
+          <div class="col"><div class="ch">Bench</div><ul>
+            <li>The full bench, as assembled over the previous 14 days</li>
+            <li>Competency Assessment Result Summary and rating sheets in TESDA format</li>
+          </ul></div>
+          <div class="col"><div class="ch">Evidence out</div><ul>
+            <li>Complete assessment portfolio</li>
+            <li>Mock result summary per unit</li>
+            <li>Individual gap-closure plan</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>Assessment, entry, and what this plan does not do</h2></div>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Assessment methods &mdash; both core units</h4>
+      <ul>
+        <li>Demonstration with oral questioning</li>
+        <li>Written examination</li>
+        <li>Portfolio with interview</li>
+        <li><b>Context:</b> the actual workplace, or a TESDA Accredited Assessment Center</li>
+        <li><b>Resources to be provided:</b> appropriate supplies and materials, applicable equipment, appropriate software, and a workplace or assessment area</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Trainee entry requirements</h4>
+      <ul>
+        <li>Completed basic education or its equivalent under existing DepEd policy</li>
+        <li>Able to communicate in any form</li>
+        <li>Knows how to use and operate a computer and a mobile device on a current operating system</li>
+        <li>Physically able to manipulate a computer input device</li>
+        <li><em>Institutional requirements &mdash; educational attainment, work experience &mdash; are set by the delivering centre and are additional to these.</em></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Deliberately out of scope</h4>
+      <ul>
+        <li><b>Supervised Industry Learning (120 h)</b> &mdash; arrange separately with a partner SOC or IT department; this plan cannot substitute for it</li>
+        <li><b>SIEM administration.</b> Trainees consume the Wazuh dashboard as an L1 analyst does &mdash; they do not tune rules, write decoders, size the indexer or maintain the server. That is engineering work above this qualification</li>
+        <li>Incident response and containment &mdash; that is Computer Security Incident Handling Level I, a separate qualification</li>
+        <li>Threat mitigation &mdash; Cyber Threat Mitigation NC II, a separate qualification</li>
+        <li>Live malware handling of any kind on classroom hardware</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Room-level requirements</h4>
+      <ul>
+        <li><b>One server box</b> &mdash; 4 physical cores, 12 GB RAM or more, 120 GB free SSD, VT-x/AMD-V enabled &mdash; running VirtualBox and the Wazuh OVA, on a static IP with a bridged adapter</li>
+        <li>One isolated lab subnet with its own router or switch &mdash; scanning targets never leave it, and the Wazuh server sits inside it</li>
+        <li>Written authorisation from the centre for every scanning exercise, filed with that day&rsquo;s evidence</li>
+        <li>Internet access for browser-based intel, ATT&amp;CK Navigator, CVE feeds and the ticketing tier</li>
+        <li>Hyper-V and Windows Sandbox <b>off</b> on the server box; Sandbox <b>on</b> for the trainee machines that will use it</li>
+        <li>Whiteboard, projector, and a USB drive holding the portable toolset</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Built from TESDA source documents</span>
+  <a href="https://tesda.gov.ph/Downloadables/CS/CS%20Cyber-threat-monitoring%20Level%20I.pdf">Competency Standards &mdash; Cyber Threat Monitoring Level I</a>
+  <a href="https://www.tesda.gov.ph/Downloadables/TRs/TR-Cyber-threat-monitoring%20NC%20I.pdf">Training Regulations &mdash; Cyber Threat Monitoring NC I (ICTCTM124)</a>
+  <span>Hour benchmarks from the NC I TR &middot; promulgated 13 November 2024</span>
+</footer>
+
+</div>

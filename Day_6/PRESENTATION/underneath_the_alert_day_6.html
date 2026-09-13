@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check for Alerts - Day 06</title>
+    <style>
+        :root {
+            --navy: #1B3A5C;
+            --blue: #2E75B6;
+            --teal: #009688;
+            --white: #FFFFFF;
+            --gray-light: #F4F7F6;
+            --gray-dark: #333333;
+            --gray-border: #E0E0E0;
+            --red: #D32F2F;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+        }
+
+        body {
+            background-color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background-color: var(--white);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-content {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bg-navy { background-color: var(--navy); color: var(--white); }
+        
+        h1, h2, h3 {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        h1 { font-size: 48px; margin-bottom: 10px; }
+        h2 { font-size: 34px; margin-bottom: 25px; border-bottom: 3px solid var(--teal); padding-bottom: 10px; display: inline-block; }
+        h3 { font-size: 24px; }
+        
+        .bg-navy h1, .bg-navy h2 { color: var(--white); border-bottom-color: var(--teal); }
+
+        p, li { font-size: 22px; color: var(--gray-dark); line-height: 1.5; margin-bottom: 15px; }
+        .bg-navy p, .bg-navy li { color: var(--white); }
+
+        .monospace { font-family: "Consolas", "Courier New", monospace; background: #eef2f5; padding: 4px 8px; border-radius: 4px; color: var(--navy); font-size: 20px; font-weight: 600;}
+        .bg-navy .monospace { background: rgba(255,255,255,0.1); color: var(--white); }
+
+        .big-line {
+            font-size: 24px;
+            font-weight: 600;
+            background-color: rgba(46, 117, 182, 0.1);
+            padding: 15px 20px;
+            border-left: 6px solid var(--blue);
+            margin: 20px 0;
+            color: var(--navy);
+        }
+
+        .big-red-line {
+            font-size: 24px;
+            font-weight: 600;
+            background-color: rgba(211, 47, 47, 0.1);
+            padding: 15px 20px;
+            border-left: 6px solid var(--red);
+            margin: 20px 0;
+            color: var(--red);
+        }
+
+        .reassurance-box {
+            background-color: rgba(0, 150, 136, 0.15);
+            border: 2px solid var(--teal);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .reassurance-box p {
+            color: var(--navy);
+            font-weight: bold;
+            margin: 0;
+            font-size: 22px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 25px 0;
+            font-size: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-border);
+        }
+        
+        th { background-color: var(--navy); color: var(--white); font-weight: 600; }
+        tr:nth-child(even) { background-color: #f8fafc; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+        
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            right: 40px;
+            font-size: 16px;
+            color: #666;
+        }
+        .bg-navy .footer { color: rgba(255,255,255,0.6); }
+
+        /* Custom Visual Elements */
+        .flex-col { display: flex; flex-direction: column; gap: 15px; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+        
+        .card { background: var(--white); border: 2px solid var(--blue); border-radius: 8px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .topic-cards { display: flex; gap: 15px; justify-content: space-between; margin-top: 20px; }
+        .topic-card { flex: 1; background: var(--gray-light); border-top: 4px solid var(--blue); padding: 15px; text-align: center; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .topic-card svg { width: 40px; height: 40px; fill: var(--navy); margin-bottom: 10px; }
+
+        .step-list { list-style: none; counter-reset: custom-counter; }
+        .step-list li { counter-increment: custom-counter; position: relative; padding-left: 55px; margin-bottom: 20px; font-size: 24px; }
+        .step-list li::before { content: counter(custom-counter); position: absolute; left: 0; top: -2px; background: var(--teal); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; }
+
+        .svg-icon { fill: var(--teal); }
+        .svg-navy { fill: var(--navy); }
+        
+        .alert-flow { display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 40px; }
+        .alert-node { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--white); font-weight: bold; font-size: 20px; width: 200px; }
+        .alert-node svg { width: 100px; height: 100px; fill: var(--white); margin-bottom: 15px; }
+        .arrow-line { height: 4px; background: var(--teal); width: 100px; position: relative; }
+        .arrow-line::after { content: ''; position: absolute; right: 0; top: -8px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 15px solid var(--teal); }
+
+        .progress-bar { width: 100%; height: 20px; background: #ddd; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+        .progress-fill { height: 100%; background: var(--teal); width: 40%; } /* Day 6 of 15 is 40% */
+
+        .section-banner { background: var(--teal); color: white; padding: 15px 60px; font-weight: bold; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <!-- SLIDE 1 -->
+    <div class="slide bg-navy">
+        <div class="slide-content" style="text-align: center; justify-content: center;">
+            <p style="color: var(--teal); font-weight: bold; font-size: 24px; letter-spacing: 2px;">CYBER THREAT MONITORING LEVEL I</p>
+            <h1 style="font-size: 72px; margin-top: 20px;">Check for Alerts</h1>
+            <p style="font-size: 30px; font-weight: 300; margin-top: 10px; color: var(--gray-light);">Where They Come From, and How to Read Them — Day 06 of 15</p>
+            
+            <div class="alert-flow" style="margin-top: 70px;">
+                <div class="alert-node">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+                    <span>A Tool</span>
+                </div>
+                
+                <div class="arrow-line"></div>
+                
+                <div class="alert-node" style="width: 250px;">
+                    <svg viewBox="0 0 24 24" style="width: 140px; height: 140px; fill: var(--teal);"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                    <span style="color: var(--teal); font-size: 28px;">THE ALERT</span>
+                </div>
+                
+                <div class="arrow-line" style="transform: rotate(180deg);"></div>
+                
+                <div class="alert-node">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <span>A Person</span>
+                </div>
+            </div>
+            
+            <p style="margin-top: 70px; font-size: 20px; font-weight: bold; background: rgba(0,0,0,0.3); padding: 15px 30px; border-radius: 8px; display: inline-block;">
+                Live demo session 8:00-11:45 &nbsp;|&nbsp; Self-study 1:00-4:00 &nbsp;|&nbsp; Today: on your own machine, no server needed
+            </p>
+        </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Five Topics, One Job: Receive the Alert</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Topic</th>
+                        <th>What you will be able to do</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>6.1 The Alert Arrives</strong></td>
+                        <td>Know the two ways an alert reaches you, and record it</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6.2 Where Alerts Come From</strong></td>
+                        <td>Name the security tools, and what each cannot see</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6.3 How Incident Reports Arrive</strong></td>
+                        <td>Take a report from a person and write it down right</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6.4 Reading Alerts on Your Machine</strong></td>
+                        <td>Find events in Windows, and make a safe real detection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6.5 Red Flags and Severity</strong></td>
+                        <td>Spot ransomware and viruses, and say how serious it is</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="big-line">There is no big security server yet. Today everything runs on YOUR computer, with tools already on it. That is the right way to begin.</p>
+
+            <div class="topic-cards">
+                <div class="topic-card">
+                    <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                    <p style="font-size: 16px; font-weight: bold; margin: 0;">6.1</p>
+                </div>
+                <div class="topic-card">
+                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    <p style="font-size: 16px; font-weight: bold; margin: 0;">6.2</p>
+                </div>
+                <div class="topic-card">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+                    <p style="font-size: 16px; font-weight: bold; margin: 0;">6.3</p>
+                </div>
+                <div class="topic-card">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    <p style="font-size: 16px; font-weight: bold; margin: 0;">6.4</p>
+                </div>
+                <div class="topic-card">
+                    <svg viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
+                    <p style="font-size: 16px; font-weight: bold; margin: 0;">6.5</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Slide 2</div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Every Alert Arrives One of Two Ways</h2>
+            
+            <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 20px;">
+                
+                <div class="card flex-col" style="flex: 1; border-color: var(--teal); border-width: 3px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--navy);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+                        <h3 style="color: var(--navy); margin: 0;">A TOOL TELLS YOU</h3>
+                    </div>
+                    <p>The antivirus caught a file; the firewall blocked a connection.</p>
+                    <p style="background: rgba(0, 150, 136, 0.1); padding: 10px; border-radius: 4px; font-weight: bold; text-align: center; color: var(--teal); margin-top: auto;">The standard calls this a<br>"Detection Alert"</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <svg viewBox="0 0 24 24" style="width: 60px; height: 60px; fill: var(--teal); margin-bottom: 10px; transform: rotate(-90deg);"><path d="M12 4l-1.41 1.41L15.17 10H4v2h11.17l-4.58 4.59L12 20l8-8z"/></svg>
+                    <svg viewBox="0 0 24 24" style="width: 100px; height: 100px; fill: var(--navy);"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                    <svg viewBox="0 0 24 24" style="width: 60px; height: 60px; fill: var(--teal); margin-top: 10px; transform: rotate(90deg);"><path d="M12 4l-1.41 1.41L15.17 10H4v2h11.17l-4.58 4.59L12 20l8-8z"/></svg>
+                </div>
+
+                <div class="card flex-col" style="flex: 1; border-color: var(--blue); border-width: 3px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--navy);"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <h3 style="color: var(--navy); margin: 0;">A PERSON TELLS YOU</h3>
+                    </div>
+                    <p>Someone calls and says their files have strange names.</p>
+                    <p style="background: rgba(46, 117, 182, 0.1); padding: 10px; border-radius: 4px; font-weight: bold; text-align: center; color: var(--blue); margin-top: auto;">The standard calls this an<br>"Incident Report"</p>
+                </div>
+                
+            </div>
+
+            <p class="big-line" style="margin-top: 40px;">Both are alerts. Both must be WRITTEN DOWN the same way every time. "I remember someone mentioned it" is not receiving an alert.</p>
+            <p>This is step one of the six-step lifecycle from Day 3. Today and tomorrow, we live inside step one.</p>
+        </div>
+        <div class="footer">Slide 3</div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>The Tools That Raise Alerts</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Tool</th>
+                        <th style="width: 40%;">Full name</th>
+                        <th>What it watches</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SIEM</strong></td>
+                        <td>Security Information & Event Management</td>
+                        <td>All the logs, in one place (the server we don't have yet)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AV</strong></td>
+                        <td>Antivirus</td>
+                        <td>Files and programs on a machine</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Firewall</strong></td>
+                        <td>—</td>
+                        <td>Traffic in and out of the network</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WAF</strong></td>
+                        <td>Web Application Firewall</td>
+                        <td>Requests coming to a website</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DLP</strong></td>
+                        <td>Data Loss Prevention</td>
+                        <td>Sensitive data trying to leave</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EDR</strong></td>
+                        <td>Endpoint Detection & Response</td>
+                        <td>Behaviour on a computer (an advanced antivirus)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NDR</strong></td>
+                        <td>Network Detection & Response</td>
+                        <td>Suspicious patterns on the network</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+                <div style="display: flex; gap: 15px; color: var(--teal);">
+                    <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; fill: currentColor;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; fill: currentColor;"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 17l3.5-4.5 2.5 3.01L14.5 11l4.5 6H5z"/></svg>
+                    <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; fill: currentColor;"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; color: var(--navy);">
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: currentColor;"><path d="M3 4l9 16 9-16H3zm3.38 2h11.25L12 16 6.38 6z"/></svg>
+                    <strong>SIEM</strong>
+                </div>
+            </div>
+
+            <p style="font-weight: bold; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 6px;">You do not operate these today. You need to know which tool an alert came from — because that tells you what it can, and cannot, see.</p>
+        </div>
+        <div class="footer">Slide 4</div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>What Each Tool CANNOT See</h2>
+            
+            <div class="grid-2" style="gap: 20px;">
+                <div>
+                    <table style="margin-top: 0;">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Tool</th>
+                                <th>It cannot see</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Antivirus</strong></td>
+                                <td>A brand-new threat nobody has caught yet ("0 detections" is not "safe")</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Firewall</strong></td>
+                                <td>What happens inside a connection it allowed</td>
+                            </tr>
+                            <tr>
+                                <td><strong>WAF</strong></td>
+                                <td>An attack that does not go through the web app</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DLP</strong></td>
+                                <td>Data it was never told to watch for</td>
+                            </tr>
+                            <tr>
+                                <td><strong>EDR</strong></td>
+                                <td>A machine with no agent installed</td>
+                            </tr>
+                            <tr>
+                                <td><strong>NDR</strong></td>
+                                <td>Encrypted traffic it cannot read</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <!-- Custom Blind Spot Visual -->
+                    <div style="background: var(--navy); border-radius: 50%; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; position: relative;">
+                        <svg viewBox="0 0 24 24" style="width: 120px; height: 120px; fill: white;"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                        <div style="position: absolute; width: 100%; height: 12px; background: var(--red); transform: rotate(-45deg);"></div>
+                    </div>
+                    <p style="font-size: 24px; font-weight: bold; color: var(--navy); margin-top: 20px;">The Blind Spot</p>
+                </div>
+            </div>
+
+            <p class="big-line" style="margin-top: 30px;">A tool can be right about the world and still miss what matters on your network. Just like the lookup websites on Day 3.</p>
+        </div>
+        <div class="footer">Slide 5</div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Activity 1 — Name That Source</h2>
+            
+            <div class="grid-2" style="height: 100%; align-items: center;">
+                <div>
+                    <ul class="step-list">
+                        <li>I show you an alert. You answer in the chat: which tool raised it?</li>
+                        <li>Then tell me <strong>ONE</strong> thing that tool cannot see.</li>
+                        <li>A few seconds each. We discuss the tricky ones.</li>
+                    </ul>
+                    
+                    <p style="margin-top: 40px; padding: 20px; background: var(--gray-light); border-left: 5px solid var(--teal); font-size: 24px;">
+                        Half your alerts come from tools like these. The other half come from people — that's next.
+                    </p>
+                </div>
+                
+                <div class="flex-center">
+                    <div style="background: var(--navy); color: white; border-radius: 12px; padding: 50px; text-align: center; width: 90%; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
+                        <svg viewBox="0 0 24 24" style="width: 100px; height: 100px; fill: var(--teal); margin-bottom: 20px;">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        <h3 style="font-size: 36px; margin-bottom: 15px; color: white;">Get Ready</h3>
+                        <p style="font-size: 24px; color: var(--gray-light); margin: 0;">Answers in the chat!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Slide 6</div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>When a Person Reports an Incident</h2>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; background: var(--navy); padding: 20px 40px; border-radius: 8px; margin-bottom: 40px;">
+                <div class="flex-col flex-center" style="color: white;">
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal);"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <span>PHONE</span>
+                </div>
+                <div class="flex-col flex-center" style="color: white;">
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal);"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/></svg>
+                    <span>WALK-IN</span>
+                </div>
+                <div class="flex-col flex-center" style="color: white;">
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal);"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span>EMAIL</span>
+                </div>
+                <div class="flex-col flex-center" style="color: white;">
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal);"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
+                    <span>SMS</span>
+                </div>
+                <div class="flex-col flex-center" style="color: white;">
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal);"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg>
+                    <span>CHAT</span>
+                </div>
+                <div class="flex-col flex-center" style="color: white;">
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal);"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    <span>VIDEO CALL</span>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 30px 50px;">
+                <h3 style="margin-bottom: 20px; color: var(--navy); border-bottom: 2px solid var(--gray-border); padding-bottom: 10px;">The Intake Checklist</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;"><svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> <span><strong>WHO</strong> is reporting, and their callback number</span></li>
+                    <li style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;"><svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> <span><strong>WHAT</strong> they saw, in their own words</span></li>
+                    <li style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;"><svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> <span><strong>WHEN</strong> it happened, and when they noticed</span></li>
+                    <li style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;"><svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> <span><strong>WHICH</strong> machine, account, or system</span></li>
+                    <li style="display: flex; gap: 15px; align-items: center;"><svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> <span><strong>WHAT</strong> they have already done</span></li>
+                </ul>
+            </div>
+
+            <p class="big-line">People never give you all five. Record what they said, then gently ASK for what is missing. Stay calm — a frightened caller calms down when you are calm.</p>
+            <p style="font-weight: bold; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 6px;">The callback number is the one fact you cannot get back later. Always ask for it.</p>
+        </div>
+        <div class="footer">Slide 7</div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Activity 2 — Take the Call</h2>
+            
+            <div class="grid-2" style="height: 100%;">
+                <div>
+                    <ul class="step-list">
+                        <li>I will play people reporting incidents — a panicked caller, a walk-in, a manager.</li>
+                        <li>Fill in your intake form as they speak.</li>
+                        <li>Each report is missing <strong>ONE</strong> fact. Notice it, and ask for it — calmly.</li>
+                    </ul>
+                    
+                    <p class="big-line" style="margin-top: 40px;">This one is watched. I am looking for two things: did you capture the core facts, and did you catch the missing one and ask?</p>
+                </div>
+                
+                <div class="flex-center flex-col">
+                    <svg viewBox="0 0 24 24" style="width: 80px; height: 80px; fill: var(--navy); margin-bottom: 10px;"><path d="M12 3c-4.97 0-9 4.03-9 9v7c0 1.1.9 2 2 2h4v-8H5v-1c0-3.87 3.13-7 7-7s7 3.13 7 7v1h-4v8h4c1.1 0 2-.9 2-2v-7c0-4.97-4.03-9-9-9z"/></svg>
+                    
+                    <div class="card" style="width: 100%; border-color: var(--teal); background: #fdfdfd;">
+                        <h3 style="text-align: center; margin-bottom: 20px; color: var(--teal);">INCIDENT INTAKE FORM</h3>
+                        <div style="border-bottom: 2px dashed #ccc; margin-bottom: 15px; padding-bottom: 5px; color: var(--navy); font-weight: bold;">WHO (Callback: )</div>
+                        <div style="border-bottom: 2px dashed #ccc; margin-bottom: 15px; padding-bottom: 5px; color: var(--navy); font-weight: bold;">WHAT (Observed)</div>
+                        <div style="border-bottom: 2px dashed #ccc; margin-bottom: 15px; padding-bottom: 5px; color: var(--navy); font-weight: bold;">WHEN</div>
+                        <div style="border-bottom: 2px dashed #ccc; margin-bottom: 15px; padding-bottom: 5px; color: var(--navy); font-weight: bold;">WHICH (System)</div>
+                        <div style="border-bottom: 2px dashed #ccc; padding-bottom: 5px; color: var(--navy); font-weight: bold;">ACTIONS TAKEN</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Slide 8</div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Where Windows Writes Down Security Events</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Place</th>
+                        <th style="width: 45%;">What is in it</th>
+                        <th>How to open</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Event Viewer</strong></td>
+                        <td>Windows logs, incl. the Windows Defender / Operational log</td>
+                        <td>Type "Event Viewer"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Protection history</strong></td>
+                        <td>Every threat Defender found, and what it did</td>
+                        <td>Windows Security app ➔ Virus & threat protection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Firewall log</strong></td>
+                        <td>Blocked/allowed connections (if logging is on)</td>
+                        <td>A text file at <span class="monospace" style="font-size: 16px;">%systemroot%\system32\LogFiles\Firewall\pfirewall.log</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="grid-3" style="margin: 20px 0;">
+                <div class="card flex-center flex-col" style="padding: 15px; text-align: center;">
+                    <svg viewBox="0 0 24 24" style="width: 60px; height: 60px; fill: var(--navy);"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    <strong>Event Viewer</strong>
+                </div>
+                <div class="card flex-center flex-col" style="padding: 15px; text-align: center; border-color: var(--teal); background: rgba(0, 150, 136, 0.05);">
+                    <svg viewBox="0 0 24 24" style="width: 60px; height: 60px; fill: var(--teal);"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                    <strong>Protection history</strong>
+                </div>
+                <div class="card flex-center flex-col" style="padding: 15px; text-align: center;">
+                    <svg viewBox="0 0 24 24" style="width: 60px; height: 60px; fill: var(--navy);"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    <strong>Log File</strong>
+                </div>
+            </div>
+
+            <p class="big-line">Event Viewer looks overwhelming — it is, for everyone. Nobody reads it all. You filter to what matters. Protection history is the friendly view; look there first.</p>
+        </div>
+        <div class="footer">Slide 9</div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>The EICAR Test File — a Safe, Real Detection</h2>
+            
+            <div class="reassurance-box">
+                <p>EICAR is NOT a virus. It has never been a virus. It is a harmless line of text that every antivirus agreed to treat as dangerous, so people can test their antivirus safely. Nothing here can harm your computer.</p>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p style="margin-bottom: 5px;">The standard string:</p>
+                <div class="monospace" style="font-size: 18px; padding: 15px; display: block; overflow-wrap: break-word; background: #eef2f5;">X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*</div>
+            </div>
+
+            <div class="grid-3" style="margin-top: 30px;">
+                <div class="flex-col flex-center" style="text-align: center;">
+                    <div style="background: var(--navy); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px;">1</div>
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--blue); margin: 10px 0;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    <p style="font-size: 18px;">Paste the EICAR text into Notepad and save it as eicar_test.txt</p>
+                </div>
+                
+                <div class="flex-col flex-center" style="text-align: center;">
+                    <div style="background: var(--navy); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px;">2</div>
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal); margin: 10px 0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <p style="font-size: 18px;">The antivirus catches it instantly — a pop-up, or the file disappears</p>
+                </div>
+                
+                <div class="flex-col flex-center" style="text-align: center;">
+                    <div style="background: var(--navy); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px;">3</div>
+                    <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--teal); margin: 10px 0;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                    <p style="font-size: 18px;">Open Protection history and read WHAT it found, WHEN, and the ACTION it took</p>
+                </div>
+            </div>
+
+            <p class="big-line">Those three things — what, when, action — are your detection record.</p>
+        </div>
+        <div class="footer">Slide 10</div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Activity 3 — Make Your Own Detection</h2>
+            
+            <div class="grid-2" style="height: 100%;">
+                <div>
+                    <ul class="step-list">
+                        <li>Paste the EICAR text (in your Activity Pack) into Notepad and save it.</li>
+                        <li>Find your detection in Protection history.</li>
+                        <li>Write down the three things: what was found, when, and the action taken.</li>
+                    </ul>
+                </div>
+                
+                <div class="flex-center">
+                    <div class="card flex-col" style="width: 100%; border-width: 4px; padding: 40px;">
+                        <h3 style="color: var(--navy); text-align: center; margin-bottom: 20px;">YOUR RECORD</h3>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <svg viewBox="0 0 24 24" style="width: 30px; height: 30px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span style="font-size: 22px; font-weight: bold; color: var(--navy);">WHAT:</span> <span style="border-bottom: 1px solid #ccc; flex: 1;"></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <svg viewBox="0 0 24 24" style="width: 30px; height: 30px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span style="font-size: 22px; font-weight: bold; color: var(--navy);">WHEN:</span> <span style="border-bottom: 1px solid #ccc; flex: 1;"></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <svg viewBox="0 0 24 24" style="width: 30px; height: 30px; fill: var(--teal);"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span style="font-size: 22px; font-weight: bold; color: var(--navy);">ACTION:</span> <span style="border-bottom: 1px solid #ccc; flex: 1;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="big-line" style="margin-top: auto;">If your machine blocks the file from saving at all — that block IS the detection. Read it in Protection history. Nobody can break anything.</p>
+        </div>
+        <div class="footer">Slide 11</div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Two Red Flags to Know: Ransomware and Viruses</h2>
+            
+            <div class="grid-2" style="gap: 40px; margin-bottom: 30px;">
+                <div class="card flex-col" style="border-color: var(--red);">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--red);"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 14h-2v-4h2v4zm0-6h-2V7h2v3z"/></svg>
+                        <h3 style="color: var(--red); margin: 0;">RANSOMWARE</h3>
+                    </div>
+                    <ul style="padding-left: 20px; font-size: 20px;">
+                        <li>Many files renamed at once (e.g. .locked)</li>
+                        <li>A ransom note in every folder</li>
+                        <li>Files won't open</li>
+                        <li>Backups deleted</li>
+                        <li>A sudden burst of file changes</li>
+                    </ul>
+                </div>
+                
+                <div class="card flex-col" style="border-color: var(--red);">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                        <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: var(--red);"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                        <h3 style="color: var(--red); margin: 0;">VIRUS / PE INFECTION</h3>
+                    </div>
+                    <ul style="padding-left: 20px; font-size: 20px;">
+                        <li>A program file (.exe, .dll) flagged by antivirus</li>
+                        <li>A process running from the wrong place</li>
+                        <li>A name pretending to be a system file (svhost32.exe)</li>
+                        <li>A file that copies itself</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 6px;">Red flags are patterns you can learn. A fake system-file name looks wrong — you spotted exactly that on Day 5. (PE just means a Windows program file.)</p>
+        </div>
+        <div class="footer">Slide 12</div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Severity — How Fast, How Loud</h2>
+            
+            <div class="grid-2" style="gap: 40px; align-items: center;">
+                <div>
+                    <table style="margin-top: 0;">
+                        <thead>
+                            <tr>
+                                <th>Band</th>
+                                <th>Meaning</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background-color: rgba(211, 47, 47, 0.1);">
+                                <td style="color: var(--red); font-weight: bold;">CRITICAL</td>
+                                <td>Business-stopping or spreading now</td>
+                                <td>Ransomware active; a server down</td>
+                            </tr>
+                            <tr style="background-color: rgba(230, 81, 0, 0.1);">
+                                <td style="color: #E65100; font-weight: bold;">HIGH</td>
+                                <td>Serious, not yet contained</td>
+                                <td>Confirmed malware still running</td>
+                            </tr>
+                            <tr style="background-color: rgba(245, 124, 0, 0.1);">
+                                <td style="color: #F57C00; font-weight: bold;">MEDIUM</td>
+                                <td>Real, but handled or single</td>
+                                <td>One malware file quarantined</td>
+                            </tr>
+                            <tr style="background-color: rgba(46, 125, 50, 0.1);">
+                                <td style="color: #2E7D32; font-weight: bold;">LOW</td>
+                                <td>Note it, no rush</td>
+                                <td>A blocked ad; an EICAR test</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="flex-col flex-center">
+                    <div style="display: flex; flex-direction: column-reverse; width: 60%; gap: 5px;">
+                        <div style="background: #2E7D32; color: white; padding: 10px; text-align: center; font-weight: bold; width: 70%; margin: 0 auto;">LOW</div>
+                        <div style="background: #F57C00; color: white; padding: 10px; text-align: center; font-weight: bold; width: 80%; margin: 0 auto;">MEDIUM</div>
+                        <div style="background: #E65100; color: white; padding: 10px; text-align: center; font-weight: bold; width: 90%; margin: 0 auto;">HIGH</div>
+                        <div style="background: var(--red); color: white; padding: 10px; text-align: center; font-weight: bold; width: 100%;">CRITICAL</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="big-line">The tool gives a severity. That's your START, not your answer. Adjust for two things: is it contained, and whose machine is it? Then write down WHY.</p>
+            <p>Severity is about how fast and how loud — not about whether it is real.</p>
+        </div>
+        <div class="footer">Slide 13</div>
+    </div>
+
+    <!-- SLIDE 14 -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Activity 4 — Sort the Cards</h2>
+            
+            <div class="grid-2" style="height: 100%;">
+                <div>
+                    <ul class="step-list">
+                        <li>In your team, sort each indicator card: RANSOMWARE, VIRUS, or ROUTINE.</li>
+                        <li>Give each one a severity band: Critical, High, Medium, or Low.</li>
+                        <li>Write the <strong>REASON</strong> for your band. The reason is what is marked, not the band.</li>
+                    </ul>
+                    <p class="big-line" style="margin-top: 40px;">The same detection can be Medium on a training PC and High on the finance server. Say why.</p>
+                </div>
+                
+                <div class="flex-center flex-col">
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <div style="width: 60px; height: 80px; background: white; border: 2px solid var(--gray-border); box-shadow: 2px 2px 5px rgba(0,0,0,0.1); transform: rotate(-10deg);"></div>
+                        <div style="width: 60px; height: 80px; background: white; border: 2px solid var(--blue); box-shadow: 2px 2px 5px rgba(0,0,0,0.1); z-index: 2;"></div>
+                        <div style="width: 60px; height: 80px; background: white; border: 2px solid var(--gray-border); box-shadow: 2px 2px 5px rgba(0,0,0,0.1); transform: rotate(10deg);"></div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; width: 100%;">
+                        <div style="flex: 1; border: 2px dashed #E65100; border-radius: 8px; padding: 15px; text-align: center; color: #E65100; font-weight: bold; background: rgba(230, 81, 0, 0.05);">RANSOMWARE</div>
+                        <div style="flex: 1; border: 2px dashed #D32F2F; border-radius: 8px; padding: 15px; text-align: center; color: #D32F2F; font-weight: bold; background: rgba(211, 47, 47, 0.05);">VIRUS</div>
+                        <div style="flex: 1; border: 2px dashed #2E7D32; border-radius: 8px; padding: 15px; text-align: center; color: #2E7D32; font-weight: bold; background: rgba(46, 125, 50, 0.05);">ROUTINE</div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; display: flex; align-items: center; gap: 10px;">
+                        <svg viewBox="0 0 24 24" style="width: 30px; height: 30px; fill: var(--navy);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                        <span style="color: var(--navy); font-weight: bold; font-size: 18px;">+ SEVERITY DIAL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Slide 14</div>
+    </div>
+
+    <!-- SLIDE 15 -->
+    <div class="slide">
+        <!-- Self-Study Banner -->
+        <div class="section-banner">
+            Self-Study Session Begins
+        </div>
+        <div class="slide-content" style="padding-top: 20px;">
+            <h2>This Afternoon — On Your Own, 1:00 to 4:00</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">#</th>
+                        <th style="width: 50%;">Task</th>
+                        <th style="width: 15%;">Time</th>
+                        <th style="width: 25%;">Hand in</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Process 6 incident reports onto intake forms</td><td>30 min</td><td>6 intake forms</td></tr>
+                    <tr><td>2</td><td>Make and record your own detection</td><td>25 min</td><td>1 detection record</td></tr>
+                    <tr><td>3</td><td>Find 3 real events in your logs</td><td>25 min</td><td>Event log worksheet</td></tr>
+                    <tr><td>4</td><td>Build your sources reference (7 tools + blind spots)</td><td>20 min</td><td>Sources table</td></tr>
+                    <tr><td>5</td><td>Write two red-flag cards (ransomware, virus)</td><td>25 min</td><td>2 indicator cards</td></tr>
+                    <tr><td>6</td><td>Fill in the severity mapping sheet</td><td>20 min</td><td>Severity sheet</td></tr>
+                    <tr><td>7</td><td>Reflection</td><td>10 min</td><td>Three answers</td></tr>
+                </tbody>
+            </table>
+
+            <div style="display: flex; gap: 30px; align-items: center; margin-top: auto;">
+                <p style="flex: 2; margin: 0; font-size: 20px;">Today you received alerts the two ways they really arrive, and made a real detection on your own machine — no server, no danger. Next, Day 7: decide what each alert IS, write the ticket, and check the security tool is actually working.</p>
+                <div style="flex: 1; background: var(--gray-light); padding: 15px; border-radius: 8px; text-align: center;">
+                    <span style="font-weight: bold; color: var(--navy); font-size: 18px;">Course Progress</span>
+                    <div class="progress-bar" style="margin-top: 10px;">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span style="font-size: 16px; color: var(--teal); font-weight: bold; display: block; margin-top: 5px;">Day 6 of 15</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Slide 15</div>
+    </div>
+
+</body>
+</html>
