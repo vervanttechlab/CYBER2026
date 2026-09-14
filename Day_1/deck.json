@@ -1,0 +1,577 @@
+{
+  "day": "1",
+  "slides": [
+    {
+      "kind": "title",
+      "title": "Orientation and\nthe Watch-Desk Voice",
+      "subtitle": "ONLINE SYNCHRONOUS 8:00–12:00  |  ASYNCHRONOUS 1:00–5:00"
+    },
+    {
+      "kind": "twocol",
+      "title": "How Today Runs",
+      "size": 12,
+      "left": {
+        "head": "MORNING — TOGETHER",
+        "items": [
+          "8:00 AM – 12:00 PM, live on this call",
+          "",
+          "Taking down a spoken handover",
+          "Reading an instruction back",
+          "Running a shift huddle with your team",
+          "",
+          "**Why here:** an assessor has to SEE you do these. They do not work alone."
+        ]
+      },
+      "right": {
+        "head": "AFTERNOON — ON YOUR OWN",
+        "items": [
+          "1:00 – 5:00 PM, wherever you work",
+          "",
+          "Eight tasks, about 3 h 40 m",
+          "Marking up an SOP",
+          "Triaging written notices",
+          "",
+          "**Why here:** reading a procedure is solitary work in the real job too."
+        ]
+      }
+    },
+    {
+      "kind": "table",
+      "title": "This Morning — Live Together",
+      "columns": [
+        "Time",
+        "Session"
+      ],
+      "widths": [
+        2,
+        7
+      ],
+      "rows": [
+        [
+          "8:00–8:15",
+          "Join, tech check, welcome"
+        ],
+        [
+          "8:15–8:35",
+          "Programme orientation and how today runs"
+        ],
+        [
+          "8:35–9:00",
+          "Icebreaker: the incident you already survived"
+        ],
+        [
+          "9:00–9:15",
+          "Team formation"
+        ],
+        [
+          "9:15–9:45",
+          "OSH induction · Home Workstation Audit"
+        ],
+        [
+          "9:45–10:15",
+          "Inside a Security Operations Centre"
+        ],
+        [
+          "10:15–10:25",
+          "Break"
+        ],
+        [
+          "10:25–11:30",
+          "Follow routine spoken messages"
+        ],
+        [
+          "11:30–11:50",
+          "Work with others — the shift huddle"
+        ],
+        [
+          "11:50–12:00",
+          "Briefing for the afternoon"
+        ]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "Ground Rules for the Live Session",
+      "accent": "blue",
+      "size": 16,
+      "body": [
+        "**Cameras on for the drills** — not the lectures",
+        [
+          "The read-back drill and the huddle are observed evidence.",
+          "An assessor cannot observe a black square."
+        ],
+        "**Mic muted unless speaking** — but unmute to ask, do not type it",
+        "**Say your name before you speak**",
+        [
+          "On a real incident bridge call nobody can see who is talking either.",
+          "Analysts who do not identify themselves cause confusion that costs hours."
+        ],
+        "",
+        "This session is recorded. The drills are your evidence."
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "Units Covered Today",
+      "columns": [
+        "Code",
+        "Unit of Competency",
+        "Elements"
+      ],
+      "widths": [
+        2,
+        4,
+        4
+      ],
+      "rows": [
+        [
+          "400311101",
+          "Receive and respond to workplace communication",
+          "LO1 spoken messages — this morning, live\nLO2 written notices — this afternoon"
+        ],
+        [
+          "400311102",
+          "Work with others",
+          "LO1 relationships\nLO2 group activities\nBoth this morning, live"
+        ],
+        [
+          "400311107",
+          "Follow OSH policies and procedures",
+          "Induction — Home Workstation Audit today\nLab checklist on site · full unit Day 3"
+        ],
+        [
+          "400311108",
+          "Apply environmental work standards",
+          "Induction — principles today\nLab pledge on site · full unit Day 3"
+        ]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "Your Qualification",
+      "size": 15,
+      "body": [
+        "## Cyber Threat Monitoring Level I — ICT Sector",
+        "",
+        "**Core Unit 1**  `CS-ICT251101`  Monitor and report cyber threats",
+        "**Core Unit 2**  `CS-ICT251102`  Conduct vulnerability scanning of assets",
+        "",
+        "Plus 9 basic competencies and 2 common competencies",
+        "",
+        "## You will be qualified to work as:",
+        [
+          "Cybersecurity Analyst (Level 1)"
+        ],
+        [
+          "Cybersecurity Support Staff"
+        ],
+        [
+          "Cybersecurity Help Desk Staff"
+        ]
+      ]
+    },
+    {
+      "kind": "twocol",
+      "title": "Competency-Based Training",
+      "size": 13,
+      "left": {
+        "head": "C — Competent",
+        "items": [
+          "You demonstrated the skill to the standard, consistently",
+          "",
+          "There is no score and no curve",
+          "",
+          "Everyone in this room can finish Competent"
+        ]
+      },
+      "right": {
+        "head": "NYC — Not Yet Competent",
+        "items": [
+          "You need more practice, and you try again",
+          "",
+          "This is normal and it is not a failure",
+          "",
+          "It is a statement about today, not about you"
+        ]
+      }
+    },
+    {
+      "kind": "numbered",
+      "title": "The Alert Pipeline",
+      "size": 15,
+      "items": [
+        "SENSORS — AV, firewall, WAF, DLP, EDR, NDR. Each one sees a slice.",
+        "SIEM — collects everything the sensors say, correlates it, ranks it.",
+        "ANALYST — you. The SIEM says 'interesting.' You decide if it is real.",
+        "ACTION — a ticket, an escalation, a phone call to a client at 2 AM.",
+        "RECORD — what you did and why. Six months later this is the only answer."
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "The Tiers — Where You Sit",
+      "columns": [
+        "Tier",
+        "What they do",
+        "Typical response"
+      ],
+      "widths": [
+        1.5,
+        4.5,
+        4
+      ],
+      "rows": [
+        [
+          "L1 — YOU",
+          "Watch the queue, triage, verify, ticket, escalate",
+          "\"This is real. Escalating.\""
+        ],
+        [
+          "L2",
+          "Investigate what L1 escalated, scope the incident",
+          "\"It spread to four machines.\""
+        ],
+        [
+          "L3",
+          "Hunt for what nobody alerted on, lead major incidents",
+          "\"This is a targeted campaign.\""
+        ],
+        [
+          "SOC Manager",
+          "Staffing, SLAs, client comms, containment decisions",
+          "\"Who has the bridge call?\""
+        ]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "The Shift Handover — Five Sections",
+      "size": 15,
+      "body": [
+        "**Open items**  — tickets still in progress, with ticket number and state",
+        "**Escalated**  — what went to L2/L3, and who owns it now",
+        "**Watch items**  — not yet incidents, but they need eyes",
+        "**System status**  — anything down, degraded, or in maintenance",
+        "**Client notes**  — anything a client asked for or complained about",
+        "",
+        "## The handover is the highest-risk moment in a SOC.",
+        [
+          "It is where information gets dropped — so it gets written down, and read back."
+        ]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "The Read-Back Rule",
+      "accent": "blue",
+      "size": 15,
+      "body": [
+        "## Repeat the instruction in your own words before you act on it.",
+        "",
+        "\"So you want me to isolate WKS-042 — not WKS-024 — and notify the IT manager. Confirming.\"",
+        "",
+        "## A good read-back contains three things:",
+        [
+          "The identifier, said back exactly — hostname, IP, ticket number"
+        ],
+        [
+          "The action you are being asked to take"
+        ],
+        [
+          "The notification — who you will tell"
+        ],
+        "",
+        "It takes four seconds. Pilots do it. Nurses do it. Analysts should do it."
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "When to Stop and Ask",
+      "size": 15,
+      "body": [
+        "## Three situations mean stop and seek clarification:",
+        [
+          "You do not understand the instruction"
+        ],
+        [
+          "The instruction contradicts the SOP"
+        ],
+        [
+          "Acting on it would exceed your authority"
+        ],
+        "",
+        "## Four questions you always have available:",
+        [
+          "\"Can you repeat the hostname / IP / ticket number?\""
+        ],
+        [
+          "\"Now, or after I finish the current ticket?\""
+        ],
+        [
+          "\"That is above my authority — escalate, or are you authorising it?\""
+        ],
+        [
+          "\"The SOP says X and you are asking for Y. Which do I follow?\""
+        ],
+        "",
+        "**Asking is not weakness. Not asking is the error.**"
+      ]
+    },
+    {
+      "kind": "numbered",
+      "title": "The Shift Huddle — 4 Minutes, On the Clock",
+      "size": 14,
+      "items": [
+        "Shift Lead opens and states the priorities for the shift.",
+        "Each member reports their open items — one sentence each.",
+        "The team agrees who picks up the watch item, by name.",
+        "Shift Lead closes with the single thing that cannot slip tonight.",
+        "In an office everyone stands, and that is what keeps it short. On a call, the timer does that job — and everyone speaks, every time."
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "Lab Rules — and Your Desk Today",
+      "accent": "blue",
+      "size": 15,
+      "body": [
+        "**No scanning, probing, or testing anything outside the lab network**",
+        [
+          "This applies from Day 1 to Day 15 — and after you graduate.",
+          "It applies wherever you are working, including today."
+        ],
+        "No live malware on any machine, ever",
+        "Lock your screen when you step away (Win+L)",
+        "",
+        "## In the lab, from our first day on site",
+        [
+          "No food or drinks at the workstations · no unapproved software",
+          "Report damaged equipment — do not repair it yourself"
+        ],
+        "",
+        "## Today your OSH evidence is the Home Workstation Audit",
+        [
+          "The Lab OSH Checklist and the Green Lab Pledge describe a room",
+          "none of us is in. You sign both on our first day on site."
+        ]
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "This Afternoon — Asynchronous",
+      "columns": [
+        "#",
+        "Task",
+        "Time",
+        "Hand in"
+      ],
+      "widths": [
+        0.6,
+        4.2,
+        1.1,
+        3.1
+      ],
+      "rows": [
+        [
+          "1",
+          "Take the pre-test",
+          "45 min",
+          "Submitted automatically"
+        ],
+        [
+          "2",
+          "Set up your evidence folder",
+          "15 min",
+          "Screenshot of the folder tree"
+        ],
+        [
+          "3",
+          "Write up this morning's handover",
+          "20 min",
+          "Shift Handover Log"
+        ],
+        [
+          "4",
+          "Read the Day 1 Student Handout",
+          "30 min",
+          "— (Tasks 5, 6, 8 assume it)"
+        ],
+        [
+          "5",
+          "Mark up the Alert Intake SOP",
+          "45 min",
+          "Worksheet + 4 answers"
+        ],
+        [
+          "6",
+          "Triage three written notices",
+          "30 min",
+          "Grid + 3 answers"
+        ],
+        [
+          "7",
+          "Evaluate a real security advisory",
+          "25 min",
+          "Evaluation sheet"
+        ],
+        [
+          "8",
+          "Reflection and Day 2 prep",
+          "10 min",
+          "Short written answer"
+        ]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "The Afternoon Is Not a Half Day",
+      "accent": "teal",
+      "size": 15,
+      "body": [
+        "**Tasks 5 and 6 carry the unit.**",
+        [
+          "Between them they are the whole of LO2 — perform workplace duties",
+          "following written notices. They are marked. If you run short of time,",
+          "those two are the ones that cannot slip."
+        ],
+        "",
+        "**Task 3 is yours alone.** Write the handover from your own notes.",
+        [
+          "Leave a gap where you missed something and write \"would confirm\".",
+          "An honest gap is better work than a plausible guess."
+        ],
+        "",
+        "**Task 5, Q1 is about a clock.** Almost everybody gets it wrong.",
+        [
+          "Read §3.3 twice. We open Day 2 with it."
+        ]
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "Reading an SOP: Watch the Verbs",
+      "columns": [
+        "Word",
+        "What it means for you"
+      ],
+      "widths": [
+        2,
+        7
+      ],
+      "rows": [
+        [
+          "shall / must",
+          "Mandatory. You have no discretion."
+        ],
+        [
+          "should",
+          "Expected. If you deviate, you must be able to justify it."
+        ],
+        [
+          "may",
+          "Your judgement — usually conditional on documenting it."
+        ],
+        [
+          "shall not",
+          "You have no authority. This is the edge of your role."
+        ],
+        [
+          "within X minutes",
+          "A clock is running. Know exactly when it starts."
+        ]
+      ]
+    },
+    {
+      "kind": "twocol",
+      "title": "Advisory vs Change Notice",
+      "size": 12,
+      "left": {
+        "head": "ADVISORY",
+        "items": [
+          "Tells you a threat, patch, or vulnerability exists",
+          "",
+          "Usually informational, sometimes actionable",
+          "",
+          "May change how you handle a detection type",
+          "",
+          "Example: \"7.4.2 gives false positives on signed binaries — verify manually before escalating\""
+        ]
+      },
+      "right": {
+        "head": "CHANGE NOTICE",
+        "items": [
+          "Tells you a system will be modified at a set time",
+          "",
+          "Always relevant to your queue",
+          "",
+          "Scheduled change is the #1 cause of false alerts",
+          "",
+          "It tells you what is NOT covered just as much as what is"
+        ]
+      }
+    },
+    {
+      "kind": "table",
+      "title": "Who Owns What on One Alert",
+      "columns": [
+        "Stage",
+        "L1 (you)",
+        "L2",
+        "SOC Manager"
+      ],
+      "widths": [
+        3,
+        2.2,
+        2,
+        2.3
+      ],
+      "rows": [
+        [
+          "Alert triage",
+          "Responsible",
+          "Consulted",
+          "Informed"
+        ],
+        [
+          "Ticket creation",
+          "Responsible",
+          "—",
+          "Informed"
+        ],
+        [
+          "Investigation",
+          "Consulted",
+          "Responsible",
+          "Informed"
+        ],
+        [
+          "Client notification",
+          "Responsible",
+          "Consulted",
+          "Accountable"
+        ],
+        [
+          "Containment decision",
+          "—",
+          "Consulted",
+          "Accountable"
+        ]
+      ]
+    },
+    {
+      "kind": "checklist",
+      "title": "Key Takeaways",
+      "size": 13,
+      "items": [
+        "A handover has five sections — and it is where information gets dropped",
+        "Read back the identifier, the action, and the notification",
+        "Three triggers to ask: don't understand, contradicts SOP, exceeds authority",
+        "shall = mandatory, should = justify, may = document, shall not = escalate",
+        "You are never Accountable for a containment decision",
+        "Keep every piece of evidence — it is your portfolio",
+        "The afternoon pack is due tonight. Tasks 5 and 6 are the ones that count."
+      ],
+      "next": "Next — Day 2: Solving routine problems on a real desk"
+    }
+  ]
+}

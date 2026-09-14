@@ -1,0 +1,127 @@
+============================================================
+AI PRESENTATION BUILDER PROMPT
+Data Analytics Level III (30-Day Program) — Day 01
+Orientation & Foundations of Data Analytics
+============================================================
+
+HOW TO USE:
+1. Copy the prompt below (from "Create a modern..." to the end).
+2. Paste it into your AI presentation builder (Gamma, Canva AI, SlidesAI, etc.).
+3. Generate the slides, then export as 16:9 widescreen via Canva.
+4. This deck is intentionally short: 12 slides covering only the essentials.
+
+COLOR SCHEME:
+- Primary dark blue: #1B3A5C
+- Accent blue: #2E75B6
+- Light background: #D6E4F0
+- White backgrounds with blue accents, sans-serif fonts.
+
+============================================================
+PROMPT (12 SLIDES) — COPY EVERYTHING BELOW
+============================================================
+
+Create a modern, professional training presentation of EXACTLY 12 slides. Use a blue and white color scheme (#1B3A5C dark blue, #2E75B6 accent blue, white background). Use clean sans-serif fonts. Every slide must include a visual element — icons, simple infographics, or stock images. Format 16:9 widescreen. Keep text short and readable; use the speaker to explain details.
+
+SLIDE 1 — TITLE
+Title: "Data Analytics Level III"
+Subtitle: "Day 01 — Orientation & Foundations of Data Analytics"
+Background: a modern data/dashboard image. Add placeholders for the TESDA logo and date.
+
+SLIDE 2 — WELCOME & AGENDA
+Title: "Welcome! Here's Today's Plan"
+Icon-bullet list:
+- Introductions & Icebreaker
+- What is Data Analytics?
+- Your Toolkit: Excel, SQL, Power BI
+- Setting Up Your Workspace
+- Goal Setting & Learning Journal
+Visual: a simple 5-step roadmap or timeline.
+
+SLIDE 3 — YOUR 30-DAY JOURNEY
+Title: "Your 30-Day Journey"
+Show a horizontal timeline with phases:
+- Week 1–2: Statistics & Excel
+- Week 2–3: Data Preparation (SQL + Excel)
+- Week 3–4: Data Summarization (Pivot Tables + SQL)
+- Week 4–5: Data Visualization (Power BI)
+- Final days: Capstone & Assessment
+Highlight "Day 1 — Orientation" as TODAY. Use a journey/road metaphor with checkpoints.
+
+SLIDE 4 — DATA → INFORMATION → INSIGHT
+Title: "From Data to Insight"
+Show a 3-step flow with icons:
+- DATA: raw facts (e.g., 120, 95, 130)
+- INFORMATION: organized with context (daily customers Mon–Fri)
+- INSIGHT: the useful conclusion ("weekends are slow — run a promo")
+Add the line: "An analyst moves data along this chain."
+
+SLIDE 5 — WHAT IS DATA ANALYTICS? (DETECTIVE ANALOGY)
+Title: "Think Like a Detective"
+Two-column comparison:
+- Detective: Clues -> Investigate -> Conclusion -> Action
+- Data Analyst: Data -> Analyze -> Insight -> Decision
+Visual: split illustration (magnifying glass on the left, dashboard on the right).
+
+SLIDE 6 — WHY IT MATTERS (PHILIPPINES)
+Title: "Data Analytics in the Philippines"
+Six industry cards with icons:
+- BPO: customer & agent analytics
+- Banking: fraud detection
+- Retail: best-sellers & peak hours
+- Food: forecasting & staffing (Jollibee)
+- Healthcare: disease trends (barangay clinics)
+- Delivery: route optimization (Grab, J&T)
+Use a subtle Philippine map or flag-color accent.
+
+SLIDE 7 — THE DATA ANALYTICS LIFECYCLE
+Title: "The 5 Steps of Every Data Project"
+Circular flow with icons:
+1. Collect  2. Clean & Prepare  3. Analyze  4. Visualize  5. Communicate & Act
+Add a callout bubble: "Cleaning takes 60–80% of the time!"
+
+SLIDE 8 — FOUR TYPES OF ANALYTICS
+Title: "Four Types of Analytics"
+Staircase from bottom to top:
+- Descriptive — "What happened?" (star: OUR FOCUS)
+- Diagnostic — "Why did it happen?" (star: OUR FOCUS)
+- Predictive — "What will happen?"
+- Prescriptive — "What should we do?"
+Arrow showing increasing complexity upward.
+
+SLIDE 9 — YOUR TOOLKIT
+Title: "Your Analytics Toolkit (All Free)"
+Three tool cards side by side:
+- Microsoft Excel — "The Foundation"
+- SQL (VS Code + SQLTools) — "The Data Language"
+- Power BI Desktop — "The Storyteller"
+Below, a horizontal flow: Data -> SQL -> Excel -> Power BI. Use a toolkit metaphor.
+
+SLIDE 10 — SET UP YOUR WORKSPACE
+Title: "Setting Up Your Workspace"
+Checklist with icons:
+1. Create your folder structure (use underscores)
+2. Install Excel + enable Data Analysis ToolPak
+3. Install VS Code + SQLTools + SQLite driver
+4. Power BI — install later (Coming Soon badge)
+Visual: a tidy desktop/workstation illustration.
+
+SLIDE 11 — WORK SAFELY & RESPONSIBLY
+Title: "Health, Green Habits & Data Ethics"
+Three small groups with icons:
+- OSH: 20-20-20 rule, good posture, hourly breaks
+- Green: paperless, energy saving, tidy files
+- Ethics: respect privacy, be honest, RA 10173 (Data Privacy Act)
+
+SLIDE 12 — YOUR TASKS & CLOSING
+Title: "What We Did Today + See You Next Meeting!"
+Today's activity checklist (done together in the 4-hour meeting):
+1. Built our first class dataset (icebreaker)
+2. Set up our tools (Excel, VS Code + SQLTools)
+3. Activities: My Data World, Career hunt, Data-to-Decision
+4. Goals + Learning Journal #1
+Add a friendly closing line: "Next: Hands-on with Excel and your first statistics!"
+Visual: a friendly wave + a progress checklist.
+
+============================================================
+END OF PROMPT
+============================================================

@@ -1,0 +1,17 @@
+Timestamp,Host,Source,Event,Detail
+2026-04-20 08:07,WKS-118,Antivirus,detection,Trojan.Agent.XZ quarantined
+2026-04-20 08:07,WKS-118,Ticket,created,6602 closed same day cleaned no further action
+2026-04-21 08:12,WKS-118,Antivirus,detection,Trojan.Agent.XZ quarantined
+2026-04-21 08:12,WKS-118,Ticket,created,6631 closed same day cleaned no further action
+2026-04-22 08:05,WKS-118,Antivirus,detection,Trojan.Agent.XZ quarantined
+2026-04-22 08:05,WKS-118,Ticket,created,6659 closed same day cleaned no further action
+2026-04-23 08:18,WKS-118,Antivirus,detection,Trojan.Agent.XZ quarantined
+2026-04-23 08:18,WKS-118,Ticket,created,6688 open
+2026-04-23 08:00,WKS-118,Windows,logon,user mreyes
+2026-04-23 08:01,WKS-118,Windows,task_triggered,\Updater\SysHostCheck at logon
+2026-04-23 08:02,WKS-118,Windows,process_start,powershell.exe -enc <base64>
+2026-04-23 08:03,WKS-118,Network,outbound,443/tcp to 198.51.100.222
+2026-04-23 08:04,WKS-118,FileSystem,file_created,C:\Users\mreyes\AppData\Local\Temp\sh.tmp
+2026-04-23 08:05,WKS-118,Antivirus,quarantine,C:\Users\mreyes\AppData\Local\Temp\sh.tmp
+2026-04-23 08:20,WKS-118,Antivirus,scan,full scan clean
+2026-04-20 00:00,ALL-OTHER,Antivirus,detection,no other host affected

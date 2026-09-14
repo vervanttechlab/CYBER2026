@@ -1,0 +1,19 @@
+Timestamp,Host,Source,Event,Detail
+2026-04-22 21:50,WKS-204,Windows,update_start,Windows Update cycle initiated
+2026-04-22 21:52,WKS-204,Firewall,allowed,443/tcp to 20.190.1.14
+2026-04-22 21:55,WKS-204,Firewall,blocked,443/tcp to 152.199.19.161
+2026-04-22 21:55,WKS-204,Firewall,blocked,443/tcp to 152.199.21.44
+2026-04-22 21:56,WKS-204,Firewall,blocked,443/tcp to 93.184.221.240
+2026-04-22 21:57,WKS-204,Firewall,blocked,443/tcp to 152.199.19.72
+2026-04-22 21:58,WKS-204,Firewall,blocked,443/tcp to 8.253.207.121
+2026-04-22 22:00,WKS-204,Firewall,blocked,443/tcp to 152.199.23.9
+2026-04-22 22:02,WKS-204,Firewall,blocked,443/tcp to 8.248.115.254
+2026-04-22 22:05,WKS-204,Firewall,blocked,443/tcp x 24 distinct destinations
+2026-04-22 22:10,WKS-204,Firewall,blocked,443/tcp x 31 distinct destinations
+2026-04-22 18:00,WKS-204,Windows,logoff,user aflores
+2026-04-22 21:50,WKS-204,Windows,service_start,wuauserv
+2026-04-22 21:51,WKS-204,Windows,process_start,svchost.exe -k netsvcs
+2026-04-22 22:10,WKS-204,Antivirus,scan_result,no detections
+2026-04-22 22:10,FIREWALL,Config,rule_note,rule DENY-CDN-RANGE added 2026-04-19
+2026-04-22 22:11,WKS-198,Firewall,blocked,443/tcp to 152.199.19.161
+2026-04-22 22:12,WKS-311,Firewall,blocked,443/tcp to 152.199.21.44

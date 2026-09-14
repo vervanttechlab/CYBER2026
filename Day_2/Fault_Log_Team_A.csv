@@ -1,0 +1,21 @@
+Timestamp,Host,Source,Event,Detail
+2026-04-22 13:58,SRV-MNL-01,Agent,keepalive,ok
+2026-04-22 13:59,SRV-MNL-02,Agent,keepalive,ok
+2026-04-22 14:00,SRV-CEB-01,Agent,keepalive,ok
+2026-04-22 14:18,SRV-MNL-01,Agent,keepalive,ok
+2026-04-22 14:19,SRV-MNL-03,Agent,keepalive,ok
+2026-04-22 14:20,SRV-MNL-01,Agent,last_event,none after this point
+2026-04-22 14:20,SRV-MNL-02,Agent,last_event,none after this point
+2026-04-22 14:20,SRV-MNL-04,Agent,last_event,none after this point
+2026-04-22 14:21,SRV-MNL-03,Agent,last_event,none after this point
+2026-04-22 14:22,SRV-CEB-01,Agent,keepalive,ok
+2026-04-22 14:30,SRV-CEB-01,Agent,keepalive,ok
+2026-04-22 14:47,SRV-MNL-01,Network,icmp_reply,64 bytes ttl=128
+2026-04-22 14:47,SRV-MNL-02,Network,icmp_reply,64 bytes ttl=128
+2026-04-22 14:47,SRV-MNL-03,Network,icmp_reply,64 bytes ttl=128
+2026-04-22 14:47,SRV-MNL-04,Network,icmp_reply,64 bytes ttl=128
+2026-04-22 14:48,SIEM,Server,disk_usage,61 percent
+2026-04-22 14:48,SIEM,Server,status,accepting connections
+2026-04-22 14:50,ALL-OTHER-46,Agent,keepalive,ok
+2026-04-22 14:00,FACILITIES,Notice,scheduled_work,Manila site power interruption 1400-1430
+2026-04-22 00:00,IT,ChangeCalendar,query,no change notice in effect for 2026-04-22

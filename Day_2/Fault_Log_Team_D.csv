@@ -1,0 +1,18 @@
+Timestamp,Host,Source,Event,Detail
+2026-04-23 02:00,SCANNER,Scan,started,target 10.20.30.0/24 hosts=96
+2026-04-23 02:05,SCANNER,Scan,progress,8 of 96 complete
+2026-04-23 02:15,SCANNER,Scan,progress,19 of 96 complete
+2026-04-23 02:30,SCANNER,Scan,progress,28 of 96 complete
+2026-04-23 02:40,SCANNER,Scan,progress,33 of 96 complete
+2026-04-23 02:47,SCANNER,Scan,stopped,34 of 96 complete no error reported
+2026-04-23 02:44,SW-CEB-CORE,Network,cpu,94 percent
+2026-04-23 02:45,SW-CEB-CORE,Network,cpu,97 percent
+2026-04-23 02:46,SW-CEB-CORE,Network,interface,Gi0/1 err-disabled
+2026-04-23 02:46,SCANNER,Network,latency,gateway 1840 ms
+2026-04-23 02:47,SCANNER,Network,latency,gateway timeout
+2026-04-23 02:52,SW-CEB-CORE,Network,interface,Gi0/1 recovered
+2026-04-22 02:00,SCANNER,Scan,started,target 10.20.30.0/24 hosts=96
+2026-04-22 03:41,SCANNER,Scan,completed,96 of 96 complete
+2026-04-22 02:30,SCANNER,Config,note,timing template T3
+2026-04-23 01:55,SCANNER,Config,note,timing template T5 changed 2026-04-22
+2026-04-23 02:00,IT,ChangeCalendar,query,no change notice in effect

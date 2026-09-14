@@ -1,0 +1,336 @@
+{
+  "day": "2",
+  "slides": [
+    {
+      "kind": "title",
+      "title": "Solving Routine Problems\non a Real Desk",
+      "subtitle": "FACE-TO-FACE  |  8:00 AM – 5:00 PM"
+    },
+    {
+      "kind": "table",
+      "title": "Today's Schedule",
+      "columns": ["Time", "Session"],
+      "widths": [2, 7],
+      "rows": [
+        ["8:00–8:15", "Recap of Day 1"],
+        ["8:15–10:00", "Identify the problem · assess the cause"],
+        ["10:00–10:15", "Break"],
+        ["10:15–12:00", "Corrective action · communicating the plan"],
+        ["12:00–1:00", "Lunch"],
+        ["1:00–2:30", "Enhance self-management skills"],
+        ["2:30–2:45", "Break"],
+        ["2:45–4:00", "Support innovation"],
+        ["4:00–4:45", "Entrepreneurial mindset in the workplace"],
+        ["4:45–5:00", "Wrap-up"]
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "Units Covered Today",
+      "columns": ["Code", "Unit of Competency", "Elements"],
+      "widths": [2, 4.2, 3.8],
+      "rows": [
+        ["400311103", "Solve/address routine problems", "LO1 identify\nLO2 assess cause\nLO3 corrective action\nLO4 communicate"],
+        ["400311104", "Enhance self-management skills", "LO1 goals\nLO2 emotions\nLO3 as a learner"],
+        ["400311105", "Support innovation", "LO1 need · LO2 recognise\nLO3 support others"],
+        ["400311109", "Adopt entrepreneurial mindset", "LO1 mindset\nLO2 practices"]
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "Symptom vs Problem",
+      "size": 12,
+      "columns": ["What people report", "What is actually wrong"],
+      "widths": [4.5, 4.5],
+      "rows": [
+        ["\"The dashboard is empty\"", "The agent stopped sending events"],
+        ["\"I'm getting a hundred alerts\"", "One rule is matching normal activity"],
+        ["\"The same ticket keeps appearing\"", "The integration is retrying on timeout"],
+        ["\"The scan never finished\"", "The target went offline mid-scan"],
+        ["\"AV cleaned it but it's back\"", "The persistence was never removed"]
+      ]
+    },
+    {
+      "kind": "numbered",
+      "title": "Three Questions That Make a Problem Statement",
+      "size": 15,
+      "items": [
+        "What exactly is happening? — observable, specific, no interpretation.",
+        "When did it start? — and what else changed at that time.",
+        "What is the scope? — one host, one team, one site, or everything.",
+        "And the one people forget: what is NOT affected? That boundary line eliminates half the possible causes before anyone touches a keyboard."
+      ]
+    },
+    {
+      "kind": "twocol",
+      "title": "Bad vs Good Problem Statement",
+      "size": 12,
+      "left": {
+        "head": "BAD",
+        "items": [
+          "\"The SIEM is broken.\"",
+          "",
+          "Four words.",
+          "",
+          "No start time. No scope. No boundary. No evidence.",
+          "",
+          "Nobody can start work from this."
+        ]
+      },
+      "right": {
+        "head": "GOOD",
+        "items": [
+          "\"Since approximately 14:20 today, four Manila servers (SRV-MNL-01 to 04) have shown no events in the dashboard.",
+          "",
+          "All other hosts are reporting normally.",
+          "",
+          "The four affected hosts respond to ping.\"",
+          "",
+          "Longer — and that is fine."
+        ]
+      }
+    },
+    {
+      "kind": "bullets",
+      "title": "The Five Whys",
+      "size": 14,
+      "body": [
+        "## PROBLEM: The same detection reappears on WKS-118 every morning.",
+        "",
+        "**Why?** AV detects and cleans the file each morning.",
+        "**Why does it come back?** Something writes it back to disk.",
+        "**Why?** A scheduled task runs at logon and downloads it.",
+        "**Why is the task there?** It was created by the original infection.",
+        "**Why wasn't it removed?** AV removed the FILE, not the PERSISTENCE.",
+        "",
+        "## ROOT CAUSE: Remediation was incomplete."
+      ]
+    },
+    {
+      "kind": "twocol",
+      "title": "Two Rules for the Five Whys",
+      "size": 13,
+      "left": {
+        "head": "STOP AT THE FIRST FIX",
+        "items": [
+          "Stop when the answer is something you can act on tonight.",
+          "",
+          "\"Remove the scheduled task\" = stop here.",
+          "",
+          "\"Because AV products only remove files\" = one why too far. That is a complaint about product design, not tonight's fix."
+        ]
+      },
+      "right": {
+        "head": "IF IT'S A PERSON, BACK UP",
+        "items": [
+          "\"Because the user clicked a link\" is true and it does not help at 2 AM.",
+          "",
+          "Awareness training is a real fix — it is not yours to implement and it does not stop the redirect this afternoon.",
+          "",
+          "Find the technical cause first."
+        ]
+      }
+    },
+    {
+      "kind": "table",
+      "title": "Six Places a SOC Fault Hides",
+      "size": 12,
+      "columns": ["Branch", "Ask"],
+      "widths": [2.2, 6.8],
+      "rows": [
+        ["Agent", "Is the service running? Right version? Right config?"],
+        ["Network", "Can the host reach the server? Is a rule blocking it?"],
+        ["Server", "Is the manager up? Disk full? Accepting writes?"],
+        ["Configuration", "Did somebody change a rule, filter, or log level?"],
+        ["Host", "Did it reboot? Is it patched? Is it even powered on?"],
+        ["Process", "Is there a change notice? Did somebody do this on purpose?"]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "The Question That Saves Your Night",
+      "accent": "blue",
+      "size": 16,
+      "body": [
+        "## \"Which of these can I test in under five minutes?\"",
+        "",
+        "You will always have twelve possible causes.",
+        "",
+        "Test the cheap ones first.",
+        "",
+        "**Ask what is still WORKING.** If other hosts are still reporting, the entire Server branch disappears in sixty seconds.",
+        "",
+        "Five minutes of `ping` and `Get-Service` eliminates half the fishbone."
+      ]
+    },
+    {
+      "kind": "numbered",
+      "title": "Choosing a Corrective Action — In This Order",
+      "size": 15,
+      "items": [
+        "Is it within my authority? If no, it is not an option — it is an escalation.",
+        "Is it reversible? Prefer the fix you can undo.",
+        "Is it the smallest thing that could work? Restart the service before you reboot the host.",
+        "Write down THREE options before you choose one. The first idea is often the most expensive."
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "The Action Plan — Seven Fields",
+      "size": 12,
+      "columns": ["Field", "What goes in it"],
+      "widths": [3, 6],
+      "rows": [
+        ["Problem", "One paragraph: what, when, scope, boundary"],
+        ["Cause", "The root cause, stated as something changeable"],
+        ["Action", "Numbered steps — each one a single verifiable act"],
+        ["Who", "A named person or role per step"],
+        ["When", "A time or deadline per step"],
+        ["How we know it worked", "The observable test — with a number"],
+        ["If it does not work", "The fallback, and who to escalate to"]
+      ]
+    },
+    {
+      "kind": "twocol",
+      "title": "Define Success in Advance",
+      "size": 13,
+      "left": {
+        "head": "NOT TESTABLE",
+        "items": [
+          "\"Monitoring restored\"",
+          "",
+          "\"Seems fixed\"",
+          "",
+          "\"The user says it's okay now\"",
+          "",
+          "A host that reports for two minutes and dies again would pass every one of these."
+        ]
+      },
+      "right": {
+        "head": "TESTABLE",
+        "items": [
+          "\"Events arriving from all four hosts, and still arriving 30 minutes later\"",
+          "",
+          "\"No detection at the 08:05–08:20 window for three consecutive working days\"",
+          "",
+          "A number, and a time."
+        ]
+      }
+    },
+    {
+      "kind": "table",
+      "title": "One Plan, Three Audiences",
+      "size": 12,
+      "columns": ["Audience", "What they need", "Length"],
+      "widths": [2.4, 5.2, 1.4],
+      "rows": [
+        ["Your L2", "Technical detail, what you already tested, what you need from them — and the ASK", "3–4 sentences"],
+        ["The client", "What is happening, whether they are affected, when they hear next", "2 sentences"],
+        ["The ticket", "Everything, in order, with timestamps and who authorised what", "As long as needed"]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "The Sentence That Makes You a Good L1",
+      "accent": "blue",
+      "size": 15,
+      "body": [
+        "\"Four Manila servers stopped sending events at about 14:20. Everything else is reporting fine and all four answer ping, so it is not the network. I checked the change calendar — nothing covers it.",
+        "",
+        "## \"I would like to restart the agent service on one of them as a test. Are you happy for me to do that?\"",
+        "",
+        "You did not just report a problem.",
+        "You arrived with a proposed next step and asked for authority.",
+        "",
+        "**Your L2 has to say one word.**"
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "Never Say This to a Client",
+      "size": 16,
+      "body": [
+        "## \"We are having some issues with the monitoring, we are looking into it, I will get back to you.\"",
+        "",
+        "No scope. No impact statement. No time commitment.",
+        "",
+        "It sounds reassuring, and it is why clients escalate to your manager.",
+        "",
+        "## Every client update needs both of these:",
+        ["Whether their business is affected"],
+        ["When they will hear from you next"]
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "Emotions on the Desk",
+      "size": 11,
+      "columns": ["State", "What it does to your work", "What to do"],
+      "widths": [2, 3.8, 3.2],
+      "rows": [
+        ["Alert fatigue", "You close things without reading them", "Stand up. Re-read the last three."],
+        ["Panic", "You skip steps and forget to record", "Go back to the SOP. Follow it literally."],
+        ["Frustration", "You stop asking for help", "Say out loud that you are stuck."],
+        ["Overconfidence", "You escalate the wrong thing", "Verify one thing you \"already know\"."],
+        ["Curiosity", "It is the engine of good triage", "Give yourself ten minutes on the odd alert."]
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "Four Signals That Innovation Is Needed",
+      "size": 12,
+      "columns": ["Signal", "What it sounds like", "Example"],
+      "widths": [1.8, 3.4, 3.8],
+      "rows": [
+        ["Repetition", "\"I do this every shift\"", "Copying alert details into the ticket by hand"],
+        ["Workaround", "\"You just have to know to do X first\"", "An undocumented step everyone learned the hard way"],
+        ["Complaint", "\"This always happens on Mondays\"", "A rule that fires on a scheduled backup job"],
+        ["Near miss", "\"We nearly missed that one\"", "A real alert buried under false positives"]
+      ]
+    },
+    {
+      "kind": "bullets",
+      "title": "The Best Improvement Is Usually Boring",
+      "size": 15,
+      "body": [
+        "**Add one line to the handover template: \"changes in effect tonight\".**",
+        "",
+        "It is the smallest idea on the list. It is also one of the best:",
+        ["It costs nothing"],
+        ["An L1 can just do it"],
+        ["It prevents an entire category of wasted work"],
+        "",
+        "## If your idea requires a budget, it is somebody else's idea.",
+        "Propose the one you can do on Tuesday."
+      ]
+    },
+    {
+      "kind": "table",
+      "title": "What Your Decisions Cost",
+      "size": 12,
+      "columns": ["What happens", "What it costs the business"],
+      "widths": [4.2, 4.8],
+      "rows": [
+        ["An alert triaged well the first time", "~8 minutes of L1 time"],
+        ["The same alert escalated wrongly to L2", "~45 minutes of L2 time, plus yours"],
+        ["A missed critical alert", "A client incident, a penalty, sometimes the contract"],
+        ["A false escalation at 3 AM", "A manager's night — and their trust in your judgement"]
+      ]
+    },
+    {
+      "kind": "checklist",
+      "title": "Key Takeaways",
+      "size": 14,
+      "items": [
+        "A problem statement needs what, when, scope, boundary, and evidence",
+        "Five Whys: stop at the first fix. If the answer is a person, back up",
+        "Rank causes by cost to eliminate — ask what is still working",
+        "Authority → reversible → smallest thing that could work",
+        "Define success with a number, before you start",
+        "The L2 gets the ask. The client gets impact and a callback time",
+        "Fix the process before you add cost"
+      ],
+      "next": "Next — Day 3: Information, safety, environment and quality"
+    }
+  ]
+}
